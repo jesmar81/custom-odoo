@@ -1,0 +1,252 @@
+<odoo>
+    <!-- Menú principal de Logística -->
+    <menuitem id="menu_logistics_main_root"
+              name="Logistics"
+              sequence="90"
+              web_icon="arbz_delivery_route/static/description/icon.png"/>
+
+    <!-- Menú Logística con su acción -->
+    <menuitem id="logistics_menu_act"
+              name="Logistics"
+              parent="menu_logistics_main_root"
+              action="action_logistics"
+              sequence="10"/>
+
+    <!-- Acción asociada al modelo logistics.route -->
+    <record id="action_logistics" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Logistics</field>
+        <field name="res_model">logistics.route</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="target">current</field>
+        <field name="context">{'search_default_filter_date_this_month': 1}</field>
+    </record>
+
+    <!-- Vista Tree para logistics.route -->
+    <record id="view_logistics_route_tree" model="ir.ui.view">
+        <field name="name">logistics.route.tree</field>
+        <field name="model">logistics.route</field>
+        <field name="arch" type="xml">
+            <list string="Logistics Routes">
+                <field name="name"/>
+                <field name="date" string="Fecha de ruta"/>
+                <field name="customer_id"/>
+                <field name="branch_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Search para logistics.route: filtros y agrupaciones -->
+    <record id="view_logistics_route_search" model="ir.ui.view">
+        <field name="name">logistics.route.search</field>
+        <field name="model">logistics.route</field>
+        <field name="arch" type="xml">
+            <search string="Logistics Routes">
+                <field name="name" string="Route" filter_domain="['|', '|', ('name', 'ilike', self), ('customer_id', 'ilike', self), ('sale_order_id', 'ilike', self)]"/>
+                <field name="customer_id"/>
+                <field name="branch_id"/>
+                <field name="attendant"/>
+                <field name="driver_id"/>
+                <field name="vehicle_id"/>
+                <field name="courier_service_id"/>
+                <field name="sale_order_id"/>
+                <field name="purchase_order_id"/>
+
+                <!-- Filtros por estado -->
+                <filter name="filter_state_pending" string="Pending" domain="[('state', 'in', ['draft', 'requested', 'assigned', 'on_route'])]"/>
+                <filter name="filter_state_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_state_requested" string="Requested" domain="[('state', '=', 'requested')]"/>
+                <filter name="filter_state_assigned" string="Assigned" domain="[('state', '=', 'assigned')]"/>
+                <filter name="filter_state_on_route" string="On Route" domain="[('state', '=', 'on_route')]"/>
+                <filter name="filter_state_delivered" string="Delivered" domain="[('state', '=', 'delivered')]"/>
+                <filter name="filter_state_postponed" string="Postponed" domain="[('state', '=', 'postponed')]"/>
+                <filter name="filter_state_cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+
+                <!-- Filtros por fecha -->
+                <filter name="filter_date" string="Date" date="date"/>
+                <filter name="filter_date_today" string="Today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_date_overdue" string="Overdue" domain="[('date', '&lt;', context_today().strftime('%Y-%m-%d')), ('state', 'in', ['draft', 'requested', 'assigned', 'on_route'])]"/>
+                <filter name="filter_date_this_month" string="Este mes" domain="[('date', '&gt;=', context_today().strftime('%Y-%m-01')), ('date', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                <filter name="filter_date_last_month" string="Mes pasado" domain="[('date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01')), ('date', '&lt;', context_today().strftime('%Y-%m-01'))]"/>
+                <filter name="filter_date_this_year" string="Este año" domain="[('date', '&gt;=', context_today().strftime('%Y-01-01')), ('date', '&lt;', (context_today() + relativedelta(months=12)).strftime('%Y-01-01'))]"/>
+                <filter name="filter_date_last_year" string="Año pasado" domain="[('date', '&gt;=', (context_today() - relativedelta(months=12)).strftime('%Y-01-01')), ('date', '&lt;', context_today().strftime('%Y-01-01'))]"/>
+                <separator/>
+
+                <!-- Filtros de asignación -->
+                <filter name="filter_no_driver" string="Without Driver" domain="[('driver_id', '=', False)]"/>
+                <filter name="filter_no_vehicle" string="Without Vehicle" domain="[('vehicle_id', '=', False)]"/>
+                <filter name="filter_ready_dispatch" string="Ready to Dispatch" domain="[('driver_id', '!=', False), ('vehicle_id', '!=', False), ('state', 'in', ['requested', 'assigned'])]"/>
+                <separator/>
+
+                <!-- Filtros de pago -->
+                <filter name="filter_payment_cash" string="Cash" domain="[('payment_method', '=', 'cash')]"/>
+                <filter name="filter_payment_card" string="Card" domain="[('payment_method', 'in', ['credit_card', 'debit_card'])]"/>
+                <filter name="filter_payment_transfer" string="Transfer" domain="[('payment_method', '=', 'eft')]"/>
+                <filter name="filter_payment_check" string="Check" domain="[('payment_method', '=', 'check')]"/>
+                <filter name="filter_payment_single" string="Single Payment" domain="[('payment_type', '=', 'single')]"/>
+                <filter name="filter_payment_installment" string="Deferred / Installments" domain="[('payment_type', '=', 'installment or deferred')]"/>
+                <separator/>
+
+                <!-- Filtros de tipo de servicio -->
+                <filter name="filter_service_direct" string="Direct" domain="[('service_type', '=', 'direct')]"/>
+                <filter name="filter_service_home" string="Home" domain="[('service_type', 'in', ['home_paid', 'home_unpaid'])]"/>
+                <filter name="filter_service_collection" string="Collection" domain="[('service_type', 'in', ['collection_paid', 'collection_unpaid'])]"/>
+                <filter name="filter_service_occur" string="Occur" domain="[('service_type', 'in', ['occur_paid', 'occur_unpaid'])]"/>
+                <filter name="filter_service_unpaid" string="Unpaid" domain="[('service_type', 'in', ['occur_unpaid', 'home_unpaid', 'collection_unpaid'])]"/>
+                <separator/>
+
+                <!-- Filtros de relaciones y otros -->
+                <filter name="filter_with_sale_orders" string="With Sale Orders" domain="[('sale_order_id', '!=', False)]"/>
+                <filter name="filter_without_sale_orders" string="Without Sale Orders" domain="[('sale_order_id', '=', False)]"/>
+                <filter name="filter_with_purchase_orders" string="With Purchase Orders" domain="[('purchase_order_id', '!=', False)]"/>
+                <filter name="filter_my_routes" string="My Routes" domain="[('create_uid', '=', uid)]"/>
+
+                <group>
+                    <filter name="group_state" string="Status" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter name="group_date" string="Date" domain="[]" context="{'group_by': 'date:day'}"/>
+                    <filter name="group_date_month" string="Month" domain="[]" context="{'group_by': 'date:month'}"/>
+                    <filter name="group_date_year" string="Año" domain="[]" context="{'group_by': 'date:year'}"/>
+                    <filter name="group_customer" string="Customer" domain="[]" context="{'group_by': 'customer_id'}"/>
+                    <filter name="group_driver" string="Driver" domain="[]" context="{'group_by': 'driver_id'}"/>
+                    <filter name="group_vehicle" string="Vehicle" domain="[]" context="{'group_by': 'vehicle_id'}"/>
+                    <filter name="group_branch" string="Branch" domain="[]" context="{'group_by': 'branch_id'}"/>
+                    <filter name="group_attendant" string="Attendant" domain="[]" context="{'group_by': 'attendant'}"/>
+                    <filter name="group_courier" string="Courier Service" domain="[]" context="{'group_by': 'courier_service_id'}"/>
+                    <filter name="group_payment_method" string="Payment Method" domain="[]" context="{'group_by': 'payment_method'}"/>
+                    <filter name="group_payment_type" string="Payment Type" domain="[]" context="{'group_by': 'payment_type'}"/>
+                    <filter name="group_service_type" string="Service Type" domain="[]" context="{'group_by': 'service_type'}"/>
+                    <filter name="group_create_uid" string="Created by" domain="[]" context="{'group_by': 'create_uid'}"/>
+                </group>
+
+                <searchpanel>
+                    <field name="customer_id" icon="fa-filter" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista Form para logistics.route -->
+    <record model="ir.ui.view" id="view_logistics_route_form">
+        <field name="name">logistics.route.form</field>
+        <field name="model">logistics.route</field>
+        <field name="arch" type="xml">
+            <form string="Logistics Route">
+                <header>
+                    <button name="action_in_progress"
+                            string="Confirm"
+                            type="object"
+                            class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_user,arbz_delivery_route.group_logistics_manager"
+                            invisible="state != 'draft'"/>
+                    <button name="next_status"
+                            string="Assigned"
+                            type="object"
+                            class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_manager"
+                            invisible="state != 'requested'"/>
+                    <button name="next_status"
+                            string="On Route"
+                            type="object"
+                            class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_manager"
+                            invisible="state != 'assigned'"/>
+                    <button name="next_status"
+                            string="Delivery"
+                            type="object"
+                            class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_driver,arbz_delivery_route.group_logistics_manager"
+                            invisible="state != 'on_route'"/>
+                    <button name="action_in_postponed"
+                            string="Reprogram"
+                            type="object"
+                            class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_supervisor,arbz_delivery_route.group_logistics_manager"
+                            invisible="state != 'postponed'"/>
+                    <button name="action_postpone"
+                            string="Postpone"
+                            type="object"
+                            class="btn-secondary"
+                            groups="arbz_delivery_route.group_logistics_supervisor,arbz_delivery_route.group_logistics_manager"
+                            invisible="state != 'on_route'"/>
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"
+                            class="btn-danger"
+                            groups="arbz_delivery_route.group_logistics_supervisor,arbz_delivery_route.group_logistics_manager"
+                            invisible="state in ('cancelled', 'delivered')"/>
+                    <progressbar field="state" colors="{'delivered': 'success', 'postponed': 'warning', 'cancelled': 'danger'}"/>
+
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="E.g: Business Trip Name" required="1"/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field name="customer_id"/>
+                            <field name="branch_id"/>
+                            <field name="attendant"/>
+                            <field name="courier_service_id"/>
+                            <field name="payment_method"/>
+                            <field name="payment_type"/>
+                            <field name="service_type"/>
+                        </group>
+                        <group>
+                            <field name="date" string="Fecha de ruta"/>
+                            <field name="start_time" widget="float_time"/>
+                            <field name="end_time" widget="float_time"/>
+                            <field name="lunch_start_time" widget="float_time"/>
+                            <field name="lunch_end_time" widget="float_time"/>
+                            <field name="driver_id"/>
+                            <field name="vehicle_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Purchase Orders">
+                            <field name="purchase_order_id"/>
+                        </page>
+                        <page string="Sale Orders">
+                            <field name="sale_order_id"/>
+                        </page>
+                        <page string="Observations">
+                            <field name="observation"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Kanban -->
+    <record id="logistics_route_kanban_view" model="ir.ui.view">
+        <field name="name">logistics.route.kanban</field>
+        <field name="model">logistics.route</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="state"/>
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="service_type"/>
+                <progressbar field="state" colors='{"delivered": "success", "postponed": "warning", "cancelled": "danger"}'/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <h4><field name="name"/></h4>
+                                <div><strong>Customer:</strong> <field name="customer_id"/></div>
+                                <div><strong>Service Type:</strong> <field name="service_type"/></div>
+                                <div><strong>Fecha de ruta:</strong> <field name="date"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record model="ir.module.category" id="module_category_abz_logistics">
+        <field name="name">Airibuz Logistics</field>
+    </record>
+
+    <record model="res.groups.privilege" id="privilege_abz_logistics">
+        <field name="name">Airibuz Logistics</field>
+        <field name="category_id" ref="module_category_abz_logistics"/>
+    </record>
+
+    <record id="group_logistics_user" model="res.groups">
+        <field name="name">Logistics User</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="privilege_id" ref="privilege_abz_logistics"/>
+    </record>
+
+    <record id="group_logistics_supervisor" model="res.groups">
+        <field name="name">Logistics supervisor</field>
+        <field name="privilege_id" ref="privilege_abz_logistics"/>
+    </record>
+
+    <record id="group_logistics_driver" model="res.groups">
+        <field name="name">Logistics Driver</field>
+        <field name="privilege_id" ref="privilege_abz_logistics"/>
+    </record>
+
+    <record id="group_logistics_manager" model="res.groups">
+        <field name="name">Logistics Manager</field>
+        <field name="privilege_id" ref="privilege_abz_logistics"/>
+    </record>
+</odoo>

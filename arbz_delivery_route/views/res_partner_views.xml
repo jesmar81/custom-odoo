@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="view_res_partner_form_logistics" model="ir.ui.view">
+           <field name="name">res.partner.form.logistics.inherit</field>
+           <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook[last()]" position="inside">
+                    <page string="Logistics">
+                        <group col="2">
+                            <group>
+                                <field name="its_vehicle_drivers" string="Its vehicle drivers" widget="boolean_toggle"/>
+                                <field name="its_courier_service" string="Its courier service" widget="boolean_toggle"/>
+                                <field name="code_plus_google_maps" string="Code plus"/>
+                            </group>
+                            <group>
+                                <field name="driver_license" invisible="its_vehicle_drivers == False" string="driver license numbner" />
+                                <field name="license_type" invisible="its_vehicle_drivers == False" string="license type"/>
+                                <field name="license_subtype" invisible="its_vehicle_drivers == False" string="license Subtype"/>
+                                <field name="days_to_expire" invisible="its_vehicle_drivers == False" string="Days to Expire" readonly="1"/>
+                                <field name="license_valid_from" invisible="its_vehicle_drivers == False" string="license valid from" />
+                                <field name="license_expiration" invisible="its_vehicle_drivers == False" string="license expiration"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+</odoo>
