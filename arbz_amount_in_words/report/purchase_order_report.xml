@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="purchse_report_amount_in_words_inherit" inherit_id="purchase.report_purchaseorder_document">
+            <xpath expr="//div[@id='total']" position="after">
+               <div style="padding-top:20px; padding-bottom:20px;">
+                    <p><span><strong>Total Amount in words: </strong></span><span t-field="o.amount_words"/></p>                    
+                </div>
+            </xpath>
+        </template>
+</odoo>
