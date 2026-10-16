@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Vista del formulario del wizard -->
+        <record model="ir.ui.view" id="wizard_report_form_view">
+            <field name="name">arbz_report_ot_wizard.form</field>
+            <field name="model">arbz.ot.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Wizard Report OT">
+                    <group>
+                        <field name="start_date" required="1"/>
+                        <field name="end_date" required="1"/>
+                    </group>
+                    <footer>
+                        <button name="generate_report" string="Generate Report" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!-- Vista de la línea del reporte -->
+        <record model="ir.ui.view" id="wizard_report_line_view">
+            <field name="name">wizard.report.line.tree</field>
+            <field name="model">wizard.report.line</field>
+            <field name="arch" type="xml">
+                <list create="false" delete="false" edit="false">
+                    <field name="orden"/>
+                    <field name="total" widget="monetary" options="{'sum_field': 'total'}"/>
+                </list>
+            </field>
+        </record>
+        <!-- Acción del wizard -->
+        <record id="wizard_report_action" model="ir.actions.act_window">
+            <field name="name">Wizard Report OT</field>
+            <field name="res_model">arbz.ot.wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <!-- Acción para ver los resultados del informe -->
+        <record model="ir.actions.act_window" id="report_results_action">
+            <field name="name">Report Results</field>
+            <field name="res_model">wizard.report.line</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="wizard_report_line_view"/>
+        </record>
+        <!-- Menú de acceso al wizard -->
+        <menuitem name="Wizard Report OT" parent="stock.menu_warehouse_report" id="menu_wizard_report_ot" action="wizard_report_action" sequence="225" />
+    </data>
+</odoo>

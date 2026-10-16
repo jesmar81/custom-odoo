@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_arbz_ot_wizard_user,Access arbz.ot.wizard,model_arbz_ot_wizard,arbz_ot_wizard.group_arbz_report_ot_user,1,0,1,0
+access_wizard_report_line_user,Access wizard.report.line,model_wizard_report_line,arbz_ot_wizard.group_arbz_report_ot_user,1,0,0,0
+access_arbz_ot_wizard_admin,Admin Access arbz.ot.wizard,model_arbz_ot_wizard,base.group_system,1,1,1,1
+access_wizard_report_line_admin,Admin Access wizard.report.line,model_wizard_report_line,base.group_system,1,1,1,1

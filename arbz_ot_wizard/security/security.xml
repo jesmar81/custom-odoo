@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Grupo de seguridad para los usuarios que pueden acceder al wizard -->
+        <record id="group_arbz_report_ot_user" model="res.groups">
+            <field name="name">Users: Wizard Report OT</field>
+        </record>
+
+        <!-- Registros de acceso para arbz.ot.wizard -->
+        <record id="access_arbz_ot_wizard_user" model="ir.model.access">
+            <field name="name">Access arbz.ot.wizard</field>
+            <field name="model_id" ref="model_arbz_ot_wizard"/>
+            <field name="group_id" ref="arbz_ot_wizard.group_arbz_report_ot_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- Registros de acceso para wizard.report.line -->
+        <record id="access_wizard_report_line_user" model="ir.model.access">
+            <field name="name">Access wizard.report.line</field>
+            <field name="model_id" ref="model_wizard_report_line"/>
+            <field name="group_id" ref="arbz_ot_wizard.group_arbz_report_ot_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- Seguridad para administradores (acceso total) -->
+        <record id="access_arbz_ot_wizard_admin" model="ir.model.access">
+            <field name="name">Admin Access arbz.ot.wizard</field>
+            <field name="model_id" ref="model_arbz_ot_wizard"/>
+            <field name="group_id" ref="base.group_system"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="access_wizard_report_line_admin" model="ir.model.access">
+            <field name="name">Admin Access wizard.report.line</field>
+            <field name="model_id" ref="model_wizard_report_line"/>
+            <field name="group_id" ref="base.group_system"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+    </data>
+</odoo>
