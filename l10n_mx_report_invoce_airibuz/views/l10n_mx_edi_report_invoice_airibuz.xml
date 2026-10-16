@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@class='oe_structure']" position="before">
+            <div class="row">
+                <div class="col-12">
+                    <t t-set="cfdi_values" t-value="o._l10n_mx_edi_get_extra_invoice_report_values()"/>
+                    <t t-if="cfdi_values.get('uuid')">
+                        <strong>Folio Fiscal:</strong>
+                        <span t-out="cfdi_values.get('uuid')"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
