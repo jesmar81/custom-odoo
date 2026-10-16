@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="addenda_femsa_autopartes" model="l10n_mx_edi.addenda">
+        <field name="name">Addenda Femsa Autopartes</field>
+        <field name="arch" type="xml">
+            <t t-xml-node="addenda">
+                <Addenda>
+                    <Documento>
+                        <FacturaFemsa>
+                            <noVersAdd>1</noVersAdd>
+                            <claseDoc>1</claseDoc>
+                            <noSociedad>0225</noSociedad>
+                            <noProveedor>0000000082</noProveedor>
+                            <noPedido t-out="record.l10n_mx_femsa_purchase_order"/>
+                            <moneda t-out="record.l10n_mx_femsa_currency"/>
+                            <noEntrada t-out="record.l10n_mx_femsa_entry"/>
+                            <noRemision t-out="record.l10n_mx_femsa_delivery_order"/>
+                            <noSocio/>
+                            <centro/>
+                            <iniPerLiq/>
+                            <finPerLiq/>
+                            <retencion1/>
+                            <retencion2/>
+                            <email>ventas@airibuz.com</email>
+                            <datosAdicionales/>
+                            <tipoOperacion>3</tipoOperacion>
+                        </FacturaFemsa>
+                    </Documento>
+                </Addenda>
+            </t>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_l10n_mx_adenda_femsa_form_inherit" model="ir.ui.view">
+            <field name="name">l10n_mx_adenda_femsa.invoice.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook[last()]" position="inside">
+                    <page string="Addenda Femsa">
+                        <group>
+                            <field name="l10n_mx_femsa_purchase_order"/>
+                            <field name="l10n_mx_femsa_currency"/>
+                            <field name="l10n_mx_femsa_entry"/>
+                            <field name="l10n_mx_femsa_delivery_order"/>
+                            <field name="l10n_mx_femsa_consumption_order"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
