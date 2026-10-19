@@ -4,7 +4,7 @@
     'category': 'Hidden',
     'author': 'jesmar81',
     'summary': "Connect Odoo AI agents to any OpenAI-compatible provider (Fireworks AI, Groq, DeepSeek, ...)",
-    'depends': ['ai'],
+    'depends': ['ai', 'ai_app'],
     'data': [
         'security/ir.model.access.csv',
         'views/ai_llm_connection_views.xml',

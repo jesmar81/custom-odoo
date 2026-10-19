@@ -48,9 +48,9 @@
     </record>
 
     <menuitem id="ai_llm_connection_menu"
-              name="AI Connections"
-              parent="base.menu_administration"
+              name="Connections"
+              parent="ai_app.ai_config_menu"
               action="ai_llm_connection_action"
               groups="base.group_system"
-              sequence="90"/>
+              sequence="15"/>
 </odoo>
