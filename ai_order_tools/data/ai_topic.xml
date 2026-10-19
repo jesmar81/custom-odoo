@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ai_topic_sale_quotations" model="ai.topic">
+        <field name="name">Sales Quotations</field>
+        <field name="description">Create and edit draft sales quotations (never confirm, cancel or delete).</field>
+        <field name="instructions"># Topic: Sales quotations
+
+## Purpose
+Prepare DRAFT quotations for the user and adjust them. A person confirms them later.
+
+## When to activate
+The user asks to create, prepare, quote, modify or review a sales order / quotation / sale.
+
+## Flow
+1. Identify the customer with "Find Partner". If there are several matches, ask which one. If there are none, say so and ask for more details.
+2. Identify EVERY product with "Find Product" (purpose "sale"). If a product is ambiguous or missing, ask. Never guess.
+3. Make sure you have a quantity for every product. If the user did not give one, ask.
+4. Call "Create Quotation" ONCE, then "Add Quotation Line" ONCE PER PRODUCT.
+5. Answer with a short summary: quotation number, customer, each line (product, quantity, unit price), total and the link. Say it is a draft that a person must confirm.
+
+## Changing a quotation
+- Use "Get Order" first to obtain the line ids, then "Update Quotation Line" or "Update Quotation".
+- Only draft quotations can be changed. If the tool says the order is not a draft, tell the user a person has to do it.
+
+## Strict constraints
+- NEVER invent ids, prices, products or customers. Use only values returned by the tools.
+- Do not set a price or discount unless the user explicitly gave one; the pricelist applies by default.
+- You cannot confirm, cancel, delete or remove lines of an order. When asked, explain that a person must do it in Odoo.
+- Do not create the same quotation twice. If a tool fails, report the error in plain words instead of retrying blindly.
+- Reply in the same language the user writes in.</field>
+        <field name="tool_ids" eval="[(6, 0, [
+            ref('ai_order_find_partner'),
+            ref('ai_order_find_product'),
+            ref('ai_sale_get_order'),
+            ref('ai_sale_create_quotation'),
+            ref('ai_sale_update_quotation'),
+            ref('ai_sale_add_line'),
+            ref('ai_sale_update_line'),
+        ])]"/>
+    </record>
+
+    <record id="ai_topic_purchase_rfq" model="ai.topic">
+        <field name="name">Purchase Requests (RFQ)</field>
+        <field name="description">Create and edit draft requests for quotation (never confirm, cancel or delete).</field>
+        <field name="instructions"># Topic: Requests for quotation (purchases)
+
+## Purpose
+Prepare DRAFT requests for quotation (RFQ) to vendors and adjust them. A person confirms them later.
+
+## When to activate
+The user asks to create, prepare, modify or review a purchase order / RFQ / request to a vendor.
+
+## Flow
+1. Identify the vendor with "Find Partner" (role "vendor"). If there are several matches, ask which one. If there are none, say so.
+2. Identify EVERY product with "Find Product" (purpose "purchase"). If a product is ambiguous or missing, ask. Never guess.
+3. Make sure you have a quantity for every product. If the user did not give one, ask.
+4. Call "Create RFQ" ONCE, then "Add RFQ Line" ONCE PER PRODUCT.
+5. Answer with a short summary: RFQ number, vendor, each line (product, quantity, unit price), total and the link. Say it is a draft that a person must confirm.
+
+## Changing an RFQ
+- Use "Get Order" first to obtain the line ids, then "Update RFQ Line" or "Update RFQ".
+- Only draft RFQs can be changed. If the tool says the order is not a draft, tell the user a person has to do it.
+
+## Strict constraints
+- NEVER invent ids, prices, products or vendors. Use only values returned by the tools.
+- Do not set a price unless the user explicitly gave one; the vendor price list applies by default.
+- You cannot confirm, cancel, delete or remove lines of an order. When asked, explain that a person must do it in Odoo.
+- Do not create the same RFQ twice. If a tool fails, report the error in plain words instead of retrying blindly.
+- Reply in the same language the user writes in.</field>
+        <field name="tool_ids" eval="[(6, 0, [
+            ref('ai_order_find_partner'),
+            ref('ai_order_find_product'),
+            ref('ai_purchase_get_order'),
+            ref('ai_purchase_create_rfq'),
+            ref('ai_purchase_update_rfq'),
+            ref('ai_purchase_add_line'),
+            ref('ai_purchase_update_line'),
+        ])]"/>
+    </record>
+</odoo>

@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ai_order_find_partner" model="ir.actions.server">
+        <field name="name">AI Orders: Find Partner</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="code">ai['result'] = record._ai_find_partners(search_text=search_text, role=role)</field>
+        <field name="ai_tool_description">Search customers or vendors by name, email, tax id or reference. ALWAYS use it to get the partner id before creating an order. If several partners match, ask the user which one. Never invent an id.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "search_text": {
+            "type": "string",
+            "description": "Name, email, tax id or reference to look for (min. 2 characters).",
+            "maxLength": 100
+        },
+        "role": {
+            "type": "string",
+            "description": "Who is being searched, only used to sort the results.",
+            "enum": [
+                "customer",
+                "vendor"
+            ],
+            "maxLength": 10
+        }
+    },
+    "required": [
+        "search_text"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_order_find_product" model="ir.actions.server">
+        <field name="name">AI Orders: Find Product</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="code">ai['result'] = record._ai_find_products(search_text=search_text, purpose=purpose)</field>
+        <field name="ai_tool_description">Search products by name, internal reference or barcode. ALWAYS use it to get the product id before adding a line. If several products match, ask the user which one. Never invent an id.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "search_text": {
+            "type": "string",
+            "description": "Name, internal reference or barcode (min. 2 characters).",
+            "maxLength": 100
+        },
+        "purpose": {
+            "type": "string",
+            "description": "'sale' for quotations, 'purchase' for requests for quotation.",
+            "enum": [
+                "sale",
+                "purchase"
+            ],
+            "maxLength": 10
+        }
+    },
+    "required": [
+        "search_text",
+        "purpose"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_sale_get_order" model="ir.actions.server">
+        <field name="name">AI Sales: Get Order</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="code">ai['result'] = record._ai_get_sale_order(order_id=order_id)</field>
+        <field name="ai_tool_description">Read a sales order or quotation with its lines (line ids are needed to change a line).</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "order_id": {
+            "type": "number",
+            "description": "Id of the sales order."
+        }
+    },
+    "required": [
+        "order_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_sale_create_quotation" model="ir.actions.server">
+        <field name="name">AI Sales: Create Quotation</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="code">ai['result'] = record._ai_create_quotation(partner_id=customer_id, customer_reference=customer_reference, note=note, validity_date=validity_date)</field>
+        <field name="ai_tool_description">Create an EMPTY draft quotation for a customer. Afterwards add each product with the 'Add Quotation Line' tool. Call it once per quotation. The quotation is only a draft: a person must confirm it.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "customer_id": {
+            "type": "number",
+            "description": "Id of the customer, obtained with 'Find Partner'."
+        },
+        "customer_reference": {
+            "type": "string",
+            "description": "Reference the customer uses for this order (optional).",
+            "maxLength": 100
+        },
+        "note": {
+            "type": "string",
+            "description": "Free text printed on the quotation (optional).",
+            "maxLength": 500
+        },
+        "validity_date": {
+            "type": "string",
+            "description": "Quotation expiry date, YYYY-MM-DD (optional).",
+            "maxLength": 10,
+            "pattern": "\\d{4}-\\d{2}-\\d{2}"
+        }
+    },
+    "required": [
+        "customer_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_sale_update_quotation" model="ir.actions.server">
+        <field name="name">AI Sales: Update Quotation</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="code">ai['result'] = record._ai_update_quotation(order_id=order_id, customer_reference=customer_reference, note=note, validity_date=validity_date)</field>
+        <field name="ai_tool_description">Change the reference, note or validity date of a DRAFT quotation. Only the values you provide are changed.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "order_id": {
+            "type": "number",
+            "description": "Id of the quotation."
+        },
+        "customer_reference": {
+            "type": "string",
+            "description": "New customer reference (optional).",
+            "maxLength": 100
+        },
+        "note": {
+            "type": "string",
+            "description": "New note printed on the quotation (optional).",
+            "maxLength": 500
+        },
+        "validity_date": {
+            "type": "string",
+            "description": "New expiry date, YYYY-MM-DD (optional).",
+            "maxLength": 10,
+            "pattern": "\\d{4}-\\d{2}-\\d{2}"
+        }
+    },
+    "required": [
+        "order_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_sale_add_line" model="ir.actions.server">
+        <field name="name">AI Sales: Add Quotation Line</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="code">ai['result'] = record._ai_add_sale_line(order_id=order_id, product_id=product_id, quantity=quantity, price_unit=price_unit, discount_percent=discount_percent)</field>
+        <field name="ai_tool_description">Add ONE product line to a DRAFT quotation. Call it once per product. Leave the price empty to use the pricelist price; only set it when the user gives a price.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "order_id": {
+            "type": "number",
+            "description": "Id of the quotation."
+        },
+        "product_id": {
+            "type": "number",
+            "description": "Id of the product, obtained with 'Find Product'."
+        },
+        "quantity": {
+            "type": "number",
+            "description": "Quantity, greater than 0."
+        },
+        "price_unit": {
+            "type": "number",
+            "description": "Unit price, only if the user asked for a specific one (optional)."
+        },
+        "discount_percent": {
+            "type": "number",
+            "description": "Discount percentage 0-100, only if the user asked for it (optional)."
+        }
+    },
+    "required": [
+        "order_id",
+        "product_id",
+        "quantity"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_sale_update_line" model="ir.actions.server">
+        <field name="name">AI Sales: Update Quotation Line</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="code">ai['result'] = record._ai_update_sale_line(line_id=line_id, quantity=quantity, price_unit=price_unit, discount_percent=discount_percent)</field>
+        <field name="ai_tool_description">Change the quantity, unit price or discount of a line of a DRAFT quotation. Use the line_id returned by 'Get Order'. To remove a line tell the user a person must delete it.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "line_id": {
+            "type": "number",
+            "description": "Id of the order line (line_id, not the product id)."
+        },
+        "quantity": {
+            "type": "number",
+            "description": "New quantity, greater than 0 (optional)."
+        },
+        "price_unit": {
+            "type": "number",
+            "description": "New unit price (optional)."
+        },
+        "discount_percent": {
+            "type": "number",
+            "description": "New discount percentage 0-100 (optional)."
+        }
+    },
+    "required": [
+        "line_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_purchase_get_order" model="ir.actions.server">
+        <field name="name">AI Purchases: Get Order</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="code">ai['result'] = record._ai_get_purchase_order(order_id=order_id)</field>
+        <field name="ai_tool_description">Read a purchase order or request for quotation with its lines (line ids are needed to change a line).</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "order_id": {
+            "type": "number",
+            "description": "Id of the purchase order."
+        }
+    },
+    "required": [
+        "order_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_purchase_create_rfq" model="ir.actions.server">
+        <field name="name">AI Purchases: Create RFQ</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="code">ai['result'] = record._ai_create_rfq(partner_id=vendor_id, vendor_reference=vendor_reference, note=note, expected_date=expected_date)</field>
+        <field name="ai_tool_description">Create an EMPTY draft request for quotation for a vendor. Afterwards add each product with the 'Add RFQ Line' tool. Call it once per request. The RFQ is only a draft: a person must confirm it.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "vendor_id": {
+            "type": "number",
+            "description": "Id of the vendor, obtained with 'Find Partner'."
+        },
+        "vendor_reference": {
+            "type": "string",
+            "description": "Vendor reference / quotation number (optional).",
+            "maxLength": 100
+        },
+        "note": {
+            "type": "string",
+            "description": "Free text for the vendor (optional).",
+            "maxLength": 500
+        },
+        "expected_date": {
+            "type": "string",
+            "description": "Expected receipt date, YYYY-MM-DD (optional).",
+            "maxLength": 10,
+            "pattern": "\\d{4}-\\d{2}-\\d{2}"
+        }
+    },
+    "required": [
+        "vendor_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_purchase_update_rfq" model="ir.actions.server">
+        <field name="name">AI Purchases: Update RFQ</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="code">ai['result'] = record._ai_update_rfq(order_id=order_id, vendor_reference=vendor_reference, note=note, expected_date=expected_date)</field>
+        <field name="ai_tool_description">Change the vendor reference, note or expected date of a DRAFT request for quotation. Only the values you provide are changed.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "order_id": {
+            "type": "number",
+            "description": "Id of the request for quotation."
+        },
+        "vendor_reference": {
+            "type": "string",
+            "description": "New vendor reference (optional).",
+            "maxLength": 100
+        },
+        "note": {
+            "type": "string",
+            "description": "New note (optional).",
+            "maxLength": 500
+        },
+        "expected_date": {
+            "type": "string",
+            "description": "New expected receipt date, YYYY-MM-DD (optional).",
+            "maxLength": 10,
+            "pattern": "\\d{4}-\\d{2}-\\d{2}"
+        }
+    },
+    "required": [
+        "order_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_purchase_add_line" model="ir.actions.server">
+        <field name="name">AI Purchases: Add RFQ Line</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="code">ai['result'] = record._ai_add_purchase_line(order_id=order_id, product_id=product_id, quantity=quantity, price_unit=price_unit)</field>
+        <field name="ai_tool_description">Add ONE product line to a DRAFT request for quotation. Call it once per product. Leave the price empty to use the vendor price list; only set it when the user gives a price.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "order_id": {
+            "type": "number",
+            "description": "Id of the request for quotation."
+        },
+        "product_id": {
+            "type": "number",
+            "description": "Id of the product, obtained with 'Find Product'."
+        },
+        "quantity": {
+            "type": "number",
+            "description": "Quantity, greater than 0."
+        },
+        "price_unit": {
+            "type": "number",
+            "description": "Unit price, only if the user asked for a specific one (optional)."
+        }
+    },
+    "required": [
+        "order_id",
+        "product_id",
+        "quantity"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_purchase_update_line" model="ir.actions.server">
+        <field name="name">AI Purchases: Update RFQ Line</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="code">ai['result'] = record._ai_update_purchase_line(line_id=line_id, quantity=quantity, price_unit=price_unit)</field>
+        <field name="ai_tool_description">Change the quantity or unit price of a line of a DRAFT request for quotation. Use the line_id returned by 'Get Order'. To remove a line tell the user a person must delete it.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "line_id": {
+            "type": "number",
+            "description": "Id of the order line (line_id, not the product id)."
+        },
+        "quantity": {
+            "type": "number",
+            "description": "New quantity, greater than 0 (optional)."
+        },
+        "price_unit": {
+            "type": "number",
+            "description": "New unit price (optional)."
+        }
+    },
+    "required": [
+        "line_id"
+    ]
+}
+        </field>
+    </record>
+
+</odoo>

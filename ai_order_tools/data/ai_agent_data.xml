@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Give the default agent the database lookup tools and the order tools. -->
+    <record id="ai.ai_default_agent" model="ai.agent">
+        <field name="topic_ids" eval="[
+            Command.link(ref('ai.ai_topic_information_retrieval_query')),
+            Command.link(ref('ai_topic_sale_quotations')),
+            Command.link(ref('ai_topic_purchase_rfq')),
+        ]"/>
+    </record>
+</odoo>
