@@ -1,4 +1,4 @@
-from odoo import _, api, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 from .ai_llm_connection import BUILTIN_PROVIDER_CODES, MODEL_SEPARATOR
@@ -6,6 +6,9 @@ from .ai_llm_connection import BUILTIN_PROVIDER_CODES, MODEL_SEPARATOR
 
 class AiAgent(models.Model):
     _inherit = 'ai.agent'
+
+    # The base field keeps a direct reference to its selection function, which would bypass this override.
+    llm_model = fields.Selection(selection='_get_llm_model_selection')
 
     @api.model
     def _get_llm_model_selection(self):
