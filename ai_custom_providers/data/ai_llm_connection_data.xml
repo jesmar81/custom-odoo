@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ai_llm_connection_fireworks" model="ai.llm.connection">
+        <field name="name">Fireworks AI</field>
+        <field name="code">fireworks</field>
+        <field name="base_url">https://api.fireworks.ai/inference/v1</field>
+        <field name="model_ids" eval="[
+            Command.create({'sequence': 10, 'label': 'GLM 5.3 Flash', 'model_identifier': 'accounts/fireworks/models/glm-5p3-flash'}),
+            Command.create({'sequence': 20, 'label': 'DeepSeek V4.1 Flash', 'model_identifier': 'accounts/fireworks/models/deepseek-v4p1-flash'}),
+            Command.create({'sequence': 30, 'label': 'Kimi K3', 'model_identifier': 'accounts/fireworks/models/kimi-k3'}),
+        ]"/>
+    </record>
+</odoo>

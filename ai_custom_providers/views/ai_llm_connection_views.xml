@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ai_llm_connection_view_list" model="ir.ui.view">
+        <field name="name">ai.llm.connection.list</field>
+        <field name="model">ai.llm.connection</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="base_url"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ai_llm_connection_view_form" model="ir.ui.view">
+        <field name="name">ai.llm.connection.form</field>
+        <field name="model">ai.llm.connection</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Fireworks AI"/>
+                            <field name="code" placeholder="fireworks"/>
+                            <field name="base_url"/>
+                            <field name="api_key" password="True"/>
+                            <field name="active" invisible="True"/>
+                        </group>
+                    </group>
+                    <field name="model_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="label"/>
+                            <field name="model_identifier"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ai_llm_connection_action" model="ir.actions.act_window">
+        <field name="name">AI Connections</field>
+        <field name="res_model">ai.llm.connection</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="ai_llm_connection_menu"
+              name="AI Connections"
+              parent="base.menu_administration"
+              action="ai_llm_connection_action"
+              groups="base.group_system"
+              sequence="90"/>
+</odoo>

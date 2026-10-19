@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_llm_connection_system,ai.llm.connection system,model_ai_llm_connection,base.group_system,1,1,1,1
+access_ai_llm_connection_user,ai.llm.connection user,model_ai_llm_connection,base.group_user,1,0,0,0
+access_ai_llm_connection_model_system,ai.llm.connection.model system,model_ai_llm_connection_model,base.group_system,1,1,1,1
+access_ai_llm_connection_model_user,ai.llm.connection.model user,model_ai_llm_connection_model,base.group_user,1,0,0,0
