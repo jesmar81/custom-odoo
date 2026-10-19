@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- noupdate: the agent is meant to be customised (model, prompt, topics) after installation. -->
+    <data noupdate="1">
+        <record id="ai_agent_buyer" model="ai.agent">
+            <field name="name">Agente Comprador</field>
+            <field name="subtitle">Pide 3 cotizaciones del historial de compras, las compara y recomienda.</field>
+            <field name="response_style">analytical</field>
+            <field name="llm_model">fireworks:accounts/fireworks/models/glm-5p3-flash</field>
+            <field name="topic_ids" eval="[Command.link(ref('ai_topic_buyer'))]"/>
+            <field name="create_uid" ref="base.user_admin"/>
+        </record>
+    </data>
+    <function model="ai.agent" name="_ai_buyer_load_default_prompt"/>
+</odoo>

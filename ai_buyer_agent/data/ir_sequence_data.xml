@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_ai_buyer_request" model="ir.sequence">
+        <field name="name">AI Buyer Request</field>
+        <field name="code">ai.buyer.request</field>
+        <field name="prefix">SCA/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

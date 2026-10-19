@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ai_buyer_request_view_list" model="ir.ui.view">
+        <field name="name">ai.buyer.request.list</field>
+        <field name="model">ai.buyer.request</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state in ('cancel', 'done')" decoration-warning="state == 'manual'">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="product_qty"/>
+                <field name="needed_date"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="deadline_date"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ai_buyer_request_view_form" model="ir.ui.view">
+        <field name="name">ai.buyer.request.form</field>
+        <field name="model">ai.buyer.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_approve_and_send" type="object" string="Approve and send"
+                            class="btn-primary" invisible="state != 'to_approve'"
+                            confirm="The requests for quotation will be sent to the vendors now. Continue?"/>
+                    <button name="action_mark_done" type="object" string="Mark as done"
+                            invisible="state not in ('waiting', 'ready')"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state in ('done', 'cancel')"
+                            confirm="The draft requests for quotation will be cancelled. Continue?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="to_approve,waiting,ready,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                            <field name="product_qty"/>
+                            <field name="product_uom_id"/>
+                            <field name="needed_date"/>
+                        </group>
+                        <group>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="sent_date"/>
+                            <field name="deadline_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Requests for quotation" name="orders">
+                            <field name="order_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="state"/>
+                                    <field name="ai_quote_registered"/>
+                                    <field name="ai_quote_lead_days"/>
+                                    <field name="amount_total"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Comparison" name="comparison">
+                            <field name="comparison_html"/>
+                            <separator string="Recommendation"/>
+                            <field name="recommendation"/>
+                        </page>
+                        <page string="Handled manually" name="manual" invisible="not skipped_partner_ids">
+                            <p class="text-muted">These vendors are bought through an intermediary. The AI never contacts them.</p>
+                            <field name="skipped_partner_ids" widget="many2many_tags"/>
+                        </page>
+                        <page string="Note" name="note" invisible="not note">
+                            <field name="note"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="ai_buyer_request_view_search" model="ir.ui.view">
+        <field name="name">ai.buyer.request.search</field>
+        <field name="model">ai.buyer.request</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="product_id"/>
+                <filter string="To approve" name="to_approve" domain="[('state', '=', 'to_approve')]"/>
+                <filter string="Open" name="open" domain="[('state', 'in', ('to_approve', 'waiting', 'ready'))]"/>
+                <filter string="Manual" name="manual" domain="[('state', '=', 'manual')]"/>
+                <group>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Product" name="group_product" context="{'group_by': 'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="ai_buyer_request_action" model="ir.actions.act_window">
+        <field name="name">Buyer Agent Requests</field>
+        <field name="res_model">ai.buyer.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_open': 1}</field>
+    </record>
+
+    <menuitem id="ai_buyer_request_menu"
+              name="Buyer Agent Requests"
+              parent="purchase.menu_procurement_management"
+              action="ai_buyer_request_action"
+              groups="purchase.group_purchase_user"
+              sequence="7"/>
+</odoo>

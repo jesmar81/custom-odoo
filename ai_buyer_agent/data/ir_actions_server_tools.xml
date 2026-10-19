@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ai_buyer_start_request" model="ir.actions.server">
+        <field name="name">AI Buyer: Start Quotation Request</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="model_ai_buyer_request"/>
+        <field name="code">ai['result'] = record._ai_start_request(product_id=product_id, quantity=quantity, needed_date=needed_date, note=note)</field>
+        <field name="ai_tool_description">Start a quotation request for a product: picks up to 3 vendors from the purchase history (never vendors bought through an intermediary) and prepares one DRAFT request for quotation per vendor. NOTHING is sent: a person must approve in Odoo. Call it once per need. Use 'Find Product' first to get the product id, and ask the user for the quantity.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "product_id": {
+            "type": "number",
+            "description": "Id of the product, obtained with 'Find Product' (purpose purchase)."
+        },
+        "quantity": {
+            "type": "number",
+            "description": "Quantity needed, greater than 0."
+        },
+        "needed_date": {
+            "type": "string",
+            "description": "Date the goods are needed, YYYY-MM-DD (optional).",
+            "maxLength": 10,
+            "pattern": "\\d{4}-\\d{2}-\\d{2}"
+        },
+        "note": {
+            "type": "string",
+            "description": "Extra context for the team (optional).",
+            "maxLength": 500
+        }
+    },
+    "required": [
+        "product_id",
+        "quantity"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_buyer_list_requests" model="ir.actions.server">
+        <field name="name">AI Buyer: List Requests</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="model_ai_buyer_request"/>
+        <field name="code">ai['result'] = record._ai_list_requests(only_open=only_open)</field>
+        <field name="ai_tool_description">List the quotation requests (id, product, state, reply deadline). Use it when the user does not give the request id.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "only_open": {
+            "type": "boolean",
+            "description": "true (default) shows only open requests."
+        }
+    },
+    "required": []
+}
+        </field>
+    </record>
+
+    <record id="ai_buyer_get_request" model="ir.actions.server">
+        <field name="name">AI Buyer: Get Request</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="model_ai_buyer_request"/>
+        <field name="code">ai['result'] = record._ai_get_request(request_id=request_id)</field>
+        <field name="ai_tool_description">Read a quotation request: state, deadline, the vendors asked and the replies they wrote (text). Use it to read the vendors' answers before registering their quotes.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "request_id": {
+            "type": "number",
+            "description": "Id of the buyer request."
+        }
+    },
+    "required": [
+        "request_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_buyer_register_quote" model="ir.actions.server">
+        <field name="name">AI Buyer: Register Quote</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="model_ai_buyer_request"/>
+        <field name="code">ai['result'] = record._ai_register_quote(order_id=order_id, unit_price=unit_price, lead_days=lead_days, conditions=conditions)</field>
+        <field name="ai_tool_description">Register the quote a vendor wrote in its reply on its draft request for quotation. Only register numbers the vendor clearly wrote; if the reply is unclear or in another unit, ask the user instead. Returns the updated comparison.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "order_id": {
+            "type": "number",
+            "description": "Id of the vendor's request for quotation (order_id from 'Get Request')."
+        },
+        "unit_price": {
+            "type": "number",
+            "description": "Unit price quoted by the vendor, in the currency of the request (greater than 0)."
+        },
+        "lead_days": {
+            "type": "number",
+            "description": "Delivery time in days if the vendor said it (optional)."
+        },
+        "conditions": {
+            "type": "string",
+            "description": "Other conditions the vendor stated: payment terms, minimum order, validity (optional).",
+            "maxLength": 500
+        }
+    },
+    "required": [
+        "order_id",
+        "unit_price"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_buyer_compare" model="ir.actions.server">
+        <field name="name">AI Buyer: Compare Quotes</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="model_ai_buyer_request"/>
+        <field name="code">ai['result'] = record._ai_compare(request_id=request_id)</field>
+        <field name="ai_tool_description">Rank the registered quotes of a request (on time first, then cheapest) with alerts. The ranking is computed by Odoo: explain it, do not recalculate it.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "request_id": {
+            "type": "number",
+            "description": "Id of the buyer request."
+        }
+    },
+    "required": [
+        "request_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_buyer_save_recommendation" model="ir.actions.server">
+        <field name="name">AI Buyer: Save Recommendation</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="model_ai_buyer_request"/>
+        <field name="code">ai['result'] = record._ai_save_recommendation(request_id=request_id, recommendation=recommendation)</field>
+        <field name="ai_tool_description">Save your recommendation on the request so the buyer sees it. A person decides and confirms the purchase.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "request_id": {
+            "type": "number",
+            "description": "Id of the buyer request."
+        },
+        "recommendation": {
+            "type": "string",
+            "description": "Recommendation in 4-8 lines: best option and why, alerts, missing replies.",
+            "maxLength": 3000
+        }
+    },
+    "required": [
+        "request_id",
+        "recommendation"
+    ]
+}
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_ai_buyer" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.ai.buyer</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+        <field name="arch" type="xml">
+            <block name="purchase_setting_container" position="inside">
+                <setting id="ai_buyer_agent" string="AI Buyer Agent"
+                         help="Quotation requests prepared by the AI and sent after a person approves them"
+                         groups="purchase.group_purchase_manager">
+                    <div class="content-group">
+                        <div class="row mt16">
+                            <label for="ai_buyer_wait_hours" class="col-lg-5 o_light_label"/>
+                            <field name="ai_buyer_wait_hours"/>
+                        </div>
+                        <div class="row">
+                            <label for="ai_buyer_history_days" class="col-lg-5 o_light_label"/>
+                            <field name="ai_buyer_history_days"/>
+                        </div>
+                        <div class="row">
+                            <label for="ai_buyer_whatsapp_text" class="col-lg-5 o_light_label"/>
+                            <field name="ai_buyer_whatsapp_text"/>
+                        </div>
+                    </div>
+                </setting>
+            </block>
+        </field>
+    </record>
+</odoo>
