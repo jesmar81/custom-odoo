@@ -29,6 +29,11 @@
                             <field name="active" invisible="True"/>
                         </group>
                     </group>
+                    <group string="Knowledge sources (embeddings)">
+                        <field name="embedding_model_identifier" placeholder="fireworks/qwen3-embedding-8b"/>
+                        <field name="embedding_max_batch_size"/>
+                        <field name="embedding_max_tokens_per_request"/>
+                    </group>
                     <field name="model_ids">
                         <list editable="bottom">
                             <field name="sequence" widget="handle"/>

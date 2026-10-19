@@ -26,12 +26,14 @@ class AiAgent(models.Model):
 
     def _get_embedding_model(self):
         self.ensure_one()
-        if self._get_provider() in BUILTIN_PROVIDER_CODES:
+        provider = self._get_provider()
+        if provider in BUILTIN_PROVIDER_CODES:
             return super()._get_embedding_model()
-        if self.sources_ids:
+        embedding_model = self.env['ai.llm.connection']._get_by_code(provider)._get_embedding_selection_value()
+        if not embedding_model and self.sources_ids:
             raise UserError(_(
-                "Knowledge sources are not supported with %(model)s: custom connections have no embedding model. "
-                "Remove the sources or choose an OpenAI or Google model.",
+                "The connection of %(model)s has no embedding model, so it cannot be used with knowledge sources. "
+                "Set an embedding model on the connection or choose an OpenAI or Google model.",
                 model=self.llm_model,
             ))
-        return False
+        return embedding_model

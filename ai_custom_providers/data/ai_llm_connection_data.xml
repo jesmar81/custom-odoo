@@ -4,6 +4,7 @@
         <field name="name">Fireworks AI</field>
         <field name="code">fireworks</field>
         <field name="base_url">https://api.fireworks.ai/inference/v1</field>
+        <field name="embedding_model_identifier">fireworks/qwen3-embedding-8b</field>
         <field name="model_ids" eval="[
             Command.create({'sequence': 10, 'label': 'GLM 5.3 Flash', 'model_identifier': 'accounts/fireworks/models/glm-5p3-flash'}),
             Command.create({'sequence': 20, 'label': 'DeepSeek V4.1 Flash', 'model_identifier': 'accounts/fireworks/models/deepseek-v4p1-flash'}),

@@ -37,9 +37,6 @@ def _wrap_builtin_or_custom(method_name, custom_implementation):
     setattr(LLMApiService, method_name, dispatcher)
 
 
-_original_init = LLMApiService.__init__
-
-
 def _init(self, env, provider='openai'):
     if provider in BUILTIN_PROVIDERS:
         return _original_init(self, env, provider)
@@ -150,8 +147,39 @@ def _request_llm_chat_completions(
         return responses, to_call, next_inputs
 
 
+def _pad_embeddings(llm_response, dimensions):
+    """Zero-pad shorter vectors to the size of the column; cosine similarity is unchanged."""
+    for embedding_row in llm_response.get("data") or ():
+        vector = embedding_row["embedding"]
+        if len(vector) > dimensions:
+            raise UserError(f"The embedding model returned {len(vector)} dimensions, but Odoo stores {dimensions}.")
+        embedding_row["embedding"] = vector + [0.0] * (dimensions - len(vector))
+    return llm_response
+
+
+def _get_embedding_custom(self, input, dimensions, model=None, encoding_format=None, user=None):
+    connection = self.env['ai.llm.connection']._get_by_code(self.provider)
+    if not connection.embedding_model_identifier:
+        raise UserError(self.env._("The connection '%s' has no embedding model.", connection.name))
+    body = {'input': input, 'model': connection.embedding_model_identifier}
+    self._add_if_set(body, 'encoding_format', encoding_format)
+    self._add_if_set(body, 'user', user)
+    request_kwargs = dict(
+        method='post', endpoint='/embeddings', headers=self._get_base_headers(), timeout=REQUEST_TIMEOUT_SECONDS,
+    )
+    try:
+        llm_response = self._request(body=dict(body, dimensions=dimensions), **request_kwargs)
+    except UserError as err:
+        if "resizable" not in str(err):
+            raise
+        llm_response = self._request(body=body, **request_kwargs)
+    return _pad_embeddings(llm_response, dimensions)
+
+
+_original_init = LLMApiService.__init__
 LLMApiService.__init__ = _init
 _wrap_builtin_or_custom('_get_api_token', _get_api_token)
 _wrap_builtin_or_custom('_build_tool_call_response', _build_tool_call_response)
 _wrap_builtin_or_custom('_handle_api_errors', _handle_api_errors)
 _wrap_builtin_or_custom('_request_llm', _request_llm_chat_completions)
+_wrap_builtin_or_custom('get_embedding', _get_embedding_custom)

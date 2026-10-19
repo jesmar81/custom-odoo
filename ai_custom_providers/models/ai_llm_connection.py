@@ -28,6 +28,14 @@ class AiLlmConnection(models.Model):
     api_key = fields.Char(string="API Key", groups='base.group_system')
     active = fields.Boolean(default=True)
     model_ids = fields.One2many('ai.llm.connection.model', 'connection_id', string="Models")
+    embedding_model_identifier = fields.Char(
+        string="Embedding Model ID",
+        help="Model used to index knowledge sources (RAG), e.g. fireworks/qwen3-embedding-8b. "
+             "Leave empty if this connection must not be used with knowledge sources. "
+             "Vectors are resized/padded to the 1536 dimensions Odoo stores.",
+    )
+    embedding_max_batch_size = fields.Integer(string="Embedding Batch Size", default=32)
+    embedding_max_tokens_per_request = fields.Integer(string="Embedding Tokens per Request", default=30000)
 
     _code_unique = models.Constraint('UNIQUE(code)', "The technical code must be unique.")
 
@@ -60,6 +68,12 @@ class AiLlmConnection(models.Model):
         if not api_key:
             raise UserError(_("No API key set for connection '%s'.", self.name))
         return api_key
+
+    def _get_embedding_selection_value(self):
+        self.ensure_one()
+        if not self.embedding_model_identifier:
+            return False
+        return f'{self.code}{MODEL_SEPARATOR}{self.embedding_model_identifier}'
 
     @api.model
     def _get_by_code(self, code):
