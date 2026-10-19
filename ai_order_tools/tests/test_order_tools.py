@@ -33,6 +33,15 @@ class TestOrderTools(TransactionCase):
         for forbidden in ('confirm', 'cancel', 'delete', 'unlink'):
             self.assertFalse([name for name in tool_names if forbidden in name], forbidden)
 
+    def test_default_prompt_is_loaded_only_when_empty(self):
+        agent = self.env.ref('ai.ai_default_agent')
+        agent.system_prompt = False
+        self.env['ai.agent']._ai_order_tools_load_default_prompt()
+        self.assertIn("Asistente de Odoo", agent.system_prompt)
+        agent.system_prompt = "Custom prompt written by a person"
+        self.env['ai.agent']._ai_order_tools_load_default_prompt()
+        self.assertEqual(agent.system_prompt, "Custom prompt written by a person")
+
     def test_find_partner_and_product(self):
         found = self._run_tool('ai_order_find_partner', {'search_text': 'zeta', 'role': 'customer'})
         self.assertEqual([partner['id'] for partner in found['partners']], [self.customer.id])

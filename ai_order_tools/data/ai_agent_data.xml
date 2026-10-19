@@ -8,4 +8,7 @@
             Command.link(ref('ai_topic_purchase_rfq')),
         ]"/>
     </record>
+
+    <!-- Only fills the system prompt when it is empty, so manual edits survive module updates. -->
+    <function model="ai.agent" name="_ai_order_tools_load_default_prompt"/>
 </odoo>
