@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_logistics" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.logistics</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="95"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Logistics" id="arbz_delivery_route" string="Logistics" name="arbz_delivery_route"
+                     groups="arbz_delivery_route.group_logistics_manager">
+                    <block title="Proof of Delivery" id="logistics_proof_settings">
+                        <setting string="Require Proof of Delivery"
+                                 help="Drivers must capture a signature or a photo to deliver.">
+                            <field name="logistics_require_proof_of_delivery"/>
+                        </setting>
+                        <setting string="Geofence Radius"
+                                 help="Flag deliveries registered farther than this distance from the branch (0 disables it).">
+                            <field name="logistics_geofence_radius_m" class="text-center" style="width: 10%; min-width: 4rem;"/>
+                            <span> meters</span>
+                        </setting>
+                    </block>
+                    <block title="Route Optimization" id="logistics_routing_settings">
+                        <setting string="Routing Engine"
+                                 help="Engine used by Optimize Routes to distribute and order the stops of a day.">
+                            <field name="logistics_routing_provider"/>
+                            <div class="content-group mt-2" invisible="logistics_routing_provider != 'vroom'">
+                                <div class="row">
+                                    <label for="logistics_vroom_url" class="col-lg-4 o_light_label"/>
+                                    <field name="logistics_vroom_url" placeholder="https://api.openrouteservice.org/optimization"/>
+                                </div>
+                                <div class="row">
+                                    <label for="logistics_vroom_api_key" class="col-lg-4 o_light_label"/>
+                                    <field name="logistics_vroom_api_key" password="True"/>
+                                </div>
+                                <div class="row">
+                                    <label for="logistics_vroom_profile" class="col-lg-4 o_light_label"/>
+                                    <field name="logistics_vroom_profile"/>
+                                </div>
+                            </div>
+                            <div class="content-group mt-2" invisible="logistics_routing_provider != 'google'">
+                                <div class="row">
+                                    <label for="logistics_google_project_id" class="col-lg-4 o_light_label"/>
+                                    <field name="logistics_google_project_id"/>
+                                </div>
+                                <div class="row">
+                                    <label for="logistics_google_service_account" class="col-lg-4 o_light_label"/>
+                                    <field name="logistics_google_service_account" password="True"/>
+                                </div>
+                            </div>
+                        </setting>
+                        <setting string="Drivers' Shift" help="Vehicles leave the depot and come back within this shift.">
+                            <div class="content-group">
+                                <div class="row">
+                                    <label for="logistics_depot_partner_id" class="col-lg-4 o_light_label"/>
+                                    <field name="logistics_depot_partner_id"/>
+                                </div>
+                                <div class="row">
+                                    <label for="logistics_shift_start" class="col-lg-4 o_light_label"/>
+                                    <field name="logistics_shift_start" widget="float_time"/>
+                                </div>
+                                <div class="row">
+                                    <label for="logistics_shift_end" class="col-lg-4 o_light_label"/>
+                                    <field name="logistics_shift_end" widget="float_time"/>
+                                </div>
+                                <div class="row">
+                                    <label for="logistics_service_minutes" class="col-lg-4 o_light_label"/>
+                                    <field name="logistics_service_minutes"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                    <block title="Mobile App" id="logistics_mobile_settings">
+                        <setting string="Mobile Session Duration"
+                                 help="Validity of the API key created when a driver logs into the mobile app.">
+                            <field name="logistics_api_key_days" class="text-center" style="width: 10%; min-width: 4rem;"/>
+                            <span> days</span>
+                        </setting>
+                        <setting string="GPS History Retention"
+                                 help="Older GPS positions are purged every day.">
+                            <field name="logistics_position_retention_days" class="text-center" style="width: 10%; min-width: 4rem;"/>
+                            <span> days</span>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_logistics_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'module': 'arbz_delivery_route', 'bin_size': False}</field>
+    </record>
+</odoo>

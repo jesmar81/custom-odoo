@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fleet_vehicle_view_form_logistics" model="ir.ui.view">
+        <field name="name">fleet.vehicle.form.logistics.inherit</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="GPS Tracking" name="logistics_gps" groups="arbz_delivery_route.group_logistics_supervisor">
+                    <group>
+                        <group>
+                            <field name="gps_device_identifier"/>
+                            <field name="logistics_last_position_at"/>
+                            <field name="logistics_last_speed_kmh"/>
+                            <field name="logistics_tracking_partner_id" invisible="not logistics_tracking_partner_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_view_map_logistics" model="ir.ui.view">
+        <field name="name">fleet.vehicle.map.logistics</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <map res_partner="logistics_tracking_partner_id" hide_address="1" panel_title="Vehicles">
+                <field name="license_plate" string="Plate"/>
+                <field name="driver_employee_id" string="Driver"/>
+                <field name="logistics_last_position_at" string="Last Position"/>
+                <field name="logistics_last_speed_kmh" string="Speed (km/h)"/>
+            </map>
+        </field>
+    </record>
+
+    <record id="action_logistics_vehicles_live" model="ir.actions.act_window">
+        <field name="name">Vehicles Live</field>
+        <field name="res_model">fleet.vehicle</field>
+        <field name="view_mode">map,list,form</field>
+        <field name="domain">[('logistics_tracking_partner_id', '!=', False)]</field>
+        <field name="view_ids" eval="[
+            Command.clear(),
+            Command.create({'view_mode': 'map', 'view_id': ref('fleet_vehicle_view_map_logistics')}),
+        ]"/>
+    </record>
+</odoo>

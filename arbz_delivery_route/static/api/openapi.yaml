@@ -1,0 +1,376 @@
+openapi: 3.0.3
+info:
+  title: Airibuz Logistics API
+  version: 1.0.0
+  description: |
+    API for the drivers' mobile app and for the GPS tracker platform (Traccar / vendor webhook).
+
+    * Authentication: `Authorization: Bearer <token>` (Odoo user API key). Get it from `POST /auth/login`.
+    * Every response is `{"ok": true, "data": ...}` or `{"ok": false, "error": {"code", "message"}}`.
+    * Datetimes are ISO 8601 in UTC. Dates are `YYYY-MM-DD`.
+    * Offline: queue every action with a unique `sync_uuid` (UUID v4) and push them with `POST /sync`.
+      Retrying the same `sync_uuid` is safe (returns `duplicate`).
+    * Errors: 401 bad/expired token, 403 forbidden, 404 not found (or not yours), 409 business rule
+      (e.g. invalid state transition), 413 payload too large, 422 invalid payload.
+servers:
+  - url: https://YOUR-ODOO/api/logistics/v1
+security:
+  - bearerAuth: []
+paths:
+  /auth/login:
+    post:
+      security: []
+      summary: Log in a driver and get an API key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [login, password]
+              properties:
+                login: {type: string}
+                password: {type: string}
+                device_name: {type: string, example: "Samsung A15 - Unidad 7"}
+      responses:
+        '200':
+          description: Token issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+                  data:
+                    type: object
+                    properties:
+                      token: {type: string}
+                      token_type: {type: string, example: Bearer}
+                      expires_at: {type: string, format: date-time}
+                      driver: {$ref: '#/components/schemas/Driver'}
+        '401': {$ref: '#/components/responses/Error'}
+        '403': {$ref: '#/components/responses/Error'}
+  /auth/logout:
+    post:
+      summary: Revoke the mobile app API keys of the current user
+      responses:
+        '200': {description: Logged out}
+  /me:
+    get:
+      summary: Current driver, license and assigned vehicle
+      responses:
+        '200':
+          description: Driver
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+                  data: {$ref: '#/components/schemas/Driver'}
+  /routes:
+    get:
+      summary: Stops of the driver for one day, ordered by sequence
+      parameters:
+        - {name: date, in: query, schema: {type: string, format: date}, description: Defaults to today}
+      responses:
+        '200':
+          description: Stops
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+                  data:
+                    type: object
+                    properties:
+                      date: {type: string, format: date}
+                      routes:
+                        type: array
+                        items: {$ref: '#/components/schemas/Route'}
+  /routes/{route_id}:
+    get:
+      summary: One stop
+      parameters:
+        - {name: route_id, in: path, required: true, schema: {type: integer}}
+      responses:
+        '200': {description: Stop}
+        '404': {$ref: '#/components/responses/Error'}
+  /routes/{route_id}/actions/{action}:
+    post:
+      summary: Apply an action online (same payload as an offline event)
+      parameters:
+        - {name: route_id, in: path, required: true, schema: {type: integer}}
+        - {name: action, in: path, required: true, schema: {$ref: '#/components/schemas/Action'}}
+      requestBody:
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/EventPayload'}
+      responses:
+        '200': {description: Applied; returns event_id and the updated stop}
+        '409': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
+  /positions:
+    post:
+      summary: Batch of phone GPS positions (max 500)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [positions]
+              properties:
+                positions:
+                  type: array
+                  maxItems: 500
+                  items: {$ref: '#/components/schemas/Position'}
+      responses:
+        '201': {description: Accepted}
+  /sync:
+    post:
+      summary: Push queued offline events (max 200), applied in order, each one independently
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [events]
+              properties:
+                events:
+                  type: array
+                  maxItems: 200
+                  items:
+                    allOf:
+                      - $ref: '#/components/schemas/EventPayload'
+                      - type: object
+                        required: [sync_uuid, route_id, action]
+                        properties:
+                          route_id: {type: integer}
+                          action: {$ref: '#/components/schemas/Action'}
+      responses:
+        '200':
+          description: One result per event
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+                  data:
+                    type: object
+                    properties:
+                      server_time: {type: string, format: date-time}
+                      results:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            sync_uuid: {type: string}
+                            status: {type: string, enum: [applied, duplicate, conflict, rejected]}
+                            route_id: {type: integer, nullable: true}
+                            route_state: {type: string, nullable: true}
+                            error: {$ref: '#/components/schemas/ErrorBody'}
+    get:
+      summary: Stops changed since a timestamp (window yesterday .. +7 days) to refresh the local cache
+      parameters:
+        - {name: since, in: query, schema: {type: string, format: date-time}, description: Use the last server_time}
+      responses:
+        '200':
+          description: Changes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+                  data:
+                    type: object
+                    properties:
+                      server_time: {type: string, format: date-time}
+                      routes:
+                        type: array
+                        items: {$ref: '#/components/schemas/Route'}
+                      removed_route_ids:
+                        type: array
+                        items: {type: integer}
+  /devices/positions:
+    post:
+      summary: GPS tracker positions (generic batch). User must be in "Logistics GPS Integration".
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [positions]
+              properties:
+                positions:
+                  type: array
+                  maxItems: 500
+                  items:
+                    allOf:
+                      - $ref: '#/components/schemas/Position'
+                      - type: object
+                        required: [device_id]
+                        properties:
+                          device_id: {type: string, description: IMEI configured on the vehicle (GPS Tracker ID)}
+      responses:
+        '201': {description: 'Accepted; unknown_devices lists ids not configured on any vehicle'}
+  /devices/traccar:
+    post:
+      summary: Traccar position forwarding (forward.type=json, forward.header "Authorization Bearer <token>")
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                device:
+                  type: object
+                  properties:
+                    uniqueId: {type: string}
+                position:
+                  type: object
+                  properties:
+                    latitude: {type: number}
+                    longitude: {type: number}
+                    speed: {type: number, description: knots}
+                    course: {type: number}
+                    accuracy: {type: number}
+                    fixTime: {type: string, format: date-time}
+                    attributes:
+                      type: object
+                      properties:
+                        ignition: {type: boolean}
+      responses:
+        '201': {description: Accepted}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok: {type: boolean, example: false}
+              error: {$ref: '#/components/schemas/ErrorBody'}
+  schemas:
+    ErrorBody:
+      type: object
+      nullable: true
+      properties:
+        code: {type: string}
+        message: {type: string}
+    Action:
+      type: string
+      enum: [start, arrive, deliver, fail, note]
+    EventPayload:
+      type: object
+      properties:
+        sync_uuid: {type: string, maxLength: 64}
+        event_datetime: {type: string, format: date-time, description: Time on the device}
+        latitude: {type: number}
+        longitude: {type: number}
+        note: {type: string, maxLength: 2000}
+        failure_reason:
+          type: string
+          enum: [customer_absent, address_not_found, refused, closed, damaged, other]
+        received_by_name: {type: string}
+        signature: {type: string, format: byte, description: PNG/JPEG base64 (max 5 MB)}
+        photos:
+          type: array
+          maxItems: 5
+          items: {type: string, format: byte}
+    Position:
+      type: object
+      required: [latitude, longitude]
+      properties:
+        latitude: {type: number, minimum: -90, maximum: 90}
+        longitude: {type: number, minimum: -180, maximum: 180}
+        accuracy_m: {type: number}
+        speed_kmh: {type: number}
+        heading_deg: {type: number}
+        ignition: {type: boolean}
+        recorded_at: {type: string, format: date-time}
+    Partner:
+      type: object
+      nullable: true
+      properties:
+        id: {type: integer}
+        name: {type: string}
+        street_name: {type: string, nullable: true}
+        street_number: {type: string, nullable: true}
+        street_number2: {type: string, nullable: true}
+        colony: {type: string, nullable: true}
+        city: {type: string, nullable: true}
+        state: {type: string, nullable: true}
+        zip: {type: string, nullable: true}
+        country: {type: string, nullable: true}
+        vat: {type: string, nullable: true}
+        phone: {type: string, nullable: true}
+        email: {type: string, nullable: true}
+        latitude: {type: number, nullable: true}
+        longitude: {type: number, nullable: true}
+    Route:
+      type: object
+      properties:
+        id: {type: integer}
+        name: {type: string}
+        sequence: {type: integer}
+        date: {type: string, format: date}
+        state: {type: string, enum: [assigned, on_route, delivered, postponed, cancelled]}
+        start_time: {type: number, description: Hours as float (9.5 = 09:30)}
+        end_time: {type: number}
+        planned_arrival: {type: string, format: date-time, nullable: true}
+        started_at: {type: string, format: date-time, nullable: true}
+        arrived_at: {type: string, format: date-time, nullable: true}
+        delivered_at: {type: string, format: date-time, nullable: true}
+        customer: {$ref: '#/components/schemas/Partner'}
+        branch: {$ref: '#/components/schemas/Partner'}
+        attendant: {$ref: '#/components/schemas/Partner'}
+        payment_method: {type: string}
+        payment_type: {type: string}
+        service_type: {type: string}
+        sale_orders:
+          type: array
+          items: {type: object, properties: {id: {type: integer}, name: {type: string}, date_order: {type: string}}}
+        purchase_orders:
+          type: array
+          items: {type: object, properties: {id: {type: integer}, name: {type: string}, date_order: {type: string}}}
+        navigation_url: {type: string, nullable: true}
+        failure_reason: {type: string, nullable: true}
+        has_signature: {type: boolean}
+        photo_count: {type: integer}
+        write_date: {type: string, format: date-time}
+    Driver:
+      type: object
+      properties:
+        employee_id: {type: integer}
+        name: {type: string}
+        user_id: {type: integer}
+        company: {type: string}
+        tz: {type: string}
+        license:
+          type: object
+          properties:
+            number: {type: string, nullable: true}
+            type: {type: string, nullable: true}
+            expiration: {type: string, format: date, nullable: true}
+            days_to_expire: {type: integer}
+        vehicle:
+          type: object
+          nullable: true
+          properties:
+            id: {type: integer}
+            name: {type: string}
+            license_plate: {type: string}
+            has_gps_tracker: {type: boolean}

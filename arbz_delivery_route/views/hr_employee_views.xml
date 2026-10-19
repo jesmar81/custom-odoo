@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_employee_form_logistics" model="ir.ui.view">
+        <field name="name">hr.employee.form.logistics.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Logistics" name="logistics" groups="arbz_delivery_route.group_logistics_user,hr.group_hr_user">
+                    <group col="2">
+                        <group string="Driver">
+                            <field name="is_logistics_driver" widget="boolean_toggle"/>
+                            <field name="logistics_last_position_at" invisible="not is_logistics_driver"/>
+                            <field name="logistics_tracking_partner_id" invisible="not logistics_tracking_partner_id"/>
+                        </group>
+                        <group string="Driver License" invisible="not is_logistics_driver">
+                            <field name="logistics_license_number"/>
+                            <field name="logistics_license_type"/>
+                            <field name="logistics_license_subtype"/>
+                            <field name="logistics_license_valid_from"/>
+                            <field name="logistics_license_expiration"/>
+                            <field name="logistics_license_days_to_expire"
+                                   decoration-danger="logistics_license_days_to_expire &lt;= 30"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_list_logistics_driver" model="ir.ui.view">
+        <field name="name">hr.employee.list.logistics.driver</field>
+        <field name="model">hr.employee</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <list string="Drivers">
+                <field name="name"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="mobile_phone"/>
+                <field name="logistics_license_number"/>
+                <field name="logistics_license_expiration"/>
+                <field name="logistics_license_days_to_expire"
+                       decoration-danger="logistics_license_days_to_expire &lt;= 30"/>
+                <field name="logistics_last_position_at"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Posición en vivo de los choferes (marcador técnico por empleado) -->
+    <record id="view_hr_employee_map_logistics_driver" model="ir.ui.view">
+        <field name="name">hr.employee.map.logistics.driver</field>
+        <field name="model">hr.employee</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <map res_partner="logistics_tracking_partner_id" hide_address="1" panel_title="Drivers">
+                <field name="name" string="Driver"/>
+                <field name="logistics_last_position_at" string="Last Position"/>
+                <field name="mobile_phone" string="Phone"/>
+            </map>
+        </field>
+    </record>
+
+    <record id="action_logistics_drivers" model="ir.actions.act_window">
+        <field name="name">Drivers</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,map,form</field>
+        <field name="domain">[('is_logistics_driver', '=', True)]</field>
+        <field name="context">{'default_is_logistics_driver': True}</field>
+        <field name="view_ids" eval="[
+            Command.clear(),
+            Command.create({'view_mode': 'list', 'view_id': ref('view_hr_employee_list_logistics_driver')}),
+            Command.create({'view_mode': 'map', 'view_id': ref('view_hr_employee_map_logistics_driver')}),
+        ]"/>
+    </record>
+
+    <record id="view_logistics_position_list" model="ir.ui.view">
+        <field name="name">logistics.position.list</field>
+        <field name="model">logistics.position</field>
+        <field name="arch" type="xml">
+            <list string="GPS Positions" create="0" edit="0">
+                <field name="recorded_at"/>
+                <field name="source"/>
+                <field name="vehicle_id"/>
+                <field name="employee_id"/>
+                <field name="latitude"/>
+                <field name="longitude"/>
+                <field name="accuracy_m"/>
+                <field name="speed_kmh"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_logistics_position_search" model="ir.ui.view">
+        <field name="name">logistics.position.search</field>
+        <field name="model">logistics.position</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="vehicle_id"/>
+                <filter name="filter_source_app" string="Mobile App" domain="[('source', '=', 'app')]"/>
+                <filter name="filter_source_device" string="GPS Tracker" domain="[('source', '=', 'device')]"/>
+                <separator/>
+                <filter name="filter_today" string="Today" domain="[('recorded_at', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group>
+                    <filter name="group_employee" string="Driver" context="{'group_by': 'employee_id'}"/>
+                    <filter name="group_vehicle" string="Vehicle" context="{'group_by': 'vehicle_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_logistics_positions" model="ir.actions.act_window">
+        <field name="name">GPS History</field>
+        <field name="res_model">logistics.position</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'search_default_filter_today': 1}</field>
+    </record>
+</odoo>

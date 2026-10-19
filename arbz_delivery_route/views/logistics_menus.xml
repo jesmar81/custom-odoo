@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_logistics_main_root"
+              name="Logistics"
+              sequence="90"
+              web_icon="arbz_delivery_route,static/description/icon.png"
+              groups="arbz_delivery_route.group_logistics_driver,arbz_delivery_route.group_logistics_user"/>
+
+    <menuitem id="menu_logistics_dispatch_today"
+              name="Today's Dispatch"
+              parent="menu_logistics_main_root"
+              action="action_logistics_dispatch_today"
+              sequence="5"/>
+
+    <menuitem id="menu_logistics_optimize_routes"
+              name="Optimize Routes"
+              parent="menu_logistics_main_root"
+              action="action_logistics_route_optimize_wizard"
+              sequence="7"
+              groups="arbz_delivery_route.group_logistics_supervisor"/>
+
+    <menuitem id="logistics_menu_act"
+              name="Routes"
+              parent="menu_logistics_main_root"
+              action="action_logistics"
+              sequence="10"/>
+
+    <menuitem id="menu_logistics_drivers_root"
+              name="Tracking"
+              parent="menu_logistics_main_root"
+              sequence="20"
+              groups="arbz_delivery_route.group_logistics_supervisor"/>
+
+    <menuitem id="menu_logistics_drivers"
+              name="Drivers"
+              parent="menu_logistics_drivers_root"
+              action="action_logistics_drivers"
+              sequence="10"/>
+
+    <menuitem id="menu_logistics_vehicles_live"
+              name="Vehicles Live"
+              parent="menu_logistics_drivers_root"
+              action="action_logistics_vehicles_live"
+              sequence="15"/>
+
+    <menuitem id="menu_logistics_positions"
+              name="GPS History"
+              parent="menu_logistics_drivers_root"
+              action="action_logistics_positions"
+              sequence="20"/>
+
+    <menuitem id="menu_logistics_configuration"
+              name="Configuration"
+              parent="menu_logistics_main_root"
+              sequence="100"
+              groups="arbz_delivery_route.group_logistics_manager"/>
+
+    <menuitem id="menu_logistics_settings"
+              name="Settings"
+              parent="menu_logistics_configuration"
+              action="action_logistics_config_settings"
+              sequence="10"/>
+</odoo>

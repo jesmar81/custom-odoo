@@ -1,38 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Menú principal de Logística -->
-    <menuitem id="menu_logistics_main_root"
-              name="Logistics"
-              sequence="90"
-              web_icon="arbz_delivery_route/static/description/icon.png"/>
-
-    <!-- Menú Logística con su acción -->
-    <menuitem id="logistics_menu_act"
-              name="Logistics"
-              parent="menu_logistics_main_root"
-              action="action_logistics"
-              sequence="10"/>
-
-    <!-- Acción asociada al modelo logistics.route -->
-    <record id="action_logistics" model="ir.actions.act_window">
-        <field name="type">ir.actions.act_window</field>
-        <field name="name">Logistics</field>
-        <field name="res_model">logistics.route</field>
-        <field name="view_mode">kanban,list,form</field>
-        <field name="target">current</field>
-        <field name="context">{'search_default_filter_date_this_month': 1}</field>
-    </record>
-
-    <!-- Vista Tree para logistics.route -->
+    <!-- Vista List para logistics.route -->
     <record id="view_logistics_route_tree" model="ir.ui.view">
-        <field name="name">logistics.route.tree</field>
+        <field name="name">logistics.route.list</field>
         <field name="model">logistics.route</field>
         <field name="arch" type="xml">
-            <list string="Logistics Routes">
+            <list string="Logistics Routes" default_order="date desc, driver_employee_id, sequence">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
-                <field name="date" string="Fecha de ruta"/>
+                <field name="date"/>
+                <field name="planned_arrival" optional="show"/>
                 <field name="customer_id"/>
                 <field name="branch_id"/>
-                <field name="state"/>
+                <field name="driver_employee_id" optional="show"/>
+                <field name="vehicle_id" optional="show"/>
+                <field name="service_type" optional="hide"/>
+                <field name="geofence_exceeded" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'delivered'"
+                       decoration-warning="state == 'postponed'"
+                       decoration-danger="state == 'cancelled'"
+                       decoration-info="state == 'on_route'"/>
             </list>
         </field>
     </record>
@@ -43,15 +32,15 @@
         <field name="model">logistics.route</field>
         <field name="arch" type="xml">
             <search string="Logistics Routes">
-                <field name="name" string="Route" filter_domain="['|', '|', ('name', 'ilike', self), ('customer_id', 'ilike', self), ('sale_order_id', 'ilike', self)]"/>
+                <field name="name" string="Route" filter_domain="['|', '|', ('name', 'ilike', self), ('customer_id', 'ilike', self), ('sale_order_ids', 'ilike', self)]"/>
                 <field name="customer_id"/>
                 <field name="branch_id"/>
-                <field name="attendant"/>
-                <field name="driver_id"/>
+                <field name="attendant_id"/>
+                <field name="driver_employee_id"/>
                 <field name="vehicle_id"/>
                 <field name="courier_service_id"/>
-                <field name="sale_order_id"/>
-                <field name="purchase_order_id"/>
+                <field name="sale_order_ids"/>
+                <field name="purchase_order_ids"/>
 
                 <!-- Filtros por estado -->
                 <filter name="filter_state_pending" string="Pending" domain="[('state', 'in', ['draft', 'requested', 'assigned', 'on_route'])]"/>
@@ -75,9 +64,11 @@
                 <separator/>
 
                 <!-- Filtros de asignación -->
-                <filter name="filter_no_driver" string="Without Driver" domain="[('driver_id', '=', False)]"/>
+                <filter name="filter_no_driver" string="Without Driver" domain="[('driver_employee_id', '=', False)]"/>
                 <filter name="filter_no_vehicle" string="Without Vehicle" domain="[('vehicle_id', '=', False)]"/>
-                <filter name="filter_ready_dispatch" string="Ready to Dispatch" domain="[('driver_id', '!=', False), ('vehicle_id', '!=', False), ('state', 'in', ['requested', 'assigned'])]"/>
+                <filter name="filter_ready_dispatch" string="Ready to Dispatch" domain="[('driver_employee_id', '!=', False), ('vehicle_id', '!=', False), ('state', 'in', ['requested', 'assigned'])]"/>
+                <filter name="filter_geofence_exceeded" string="Delivered Out of Geofence" domain="[('geofence_exceeded', '=', True)]"/>
+                <filter name="filter_branch_not_located" string="Branch Not Geolocated" domain="[('branch_id.partner_latitude', '=', 0), ('branch_id.partner_longitude', '=', 0)]"/>
                 <separator/>
 
                 <!-- Filtros de pago -->
@@ -98,9 +89,9 @@
                 <separator/>
 
                 <!-- Filtros de relaciones y otros -->
-                <filter name="filter_with_sale_orders" string="With Sale Orders" domain="[('sale_order_id', '!=', False)]"/>
-                <filter name="filter_without_sale_orders" string="Without Sale Orders" domain="[('sale_order_id', '=', False)]"/>
-                <filter name="filter_with_purchase_orders" string="With Purchase Orders" domain="[('purchase_order_id', '!=', False)]"/>
+                <filter name="filter_with_sale_orders" string="With Sale Orders" domain="[('sale_order_ids', '!=', False)]"/>
+                <filter name="filter_without_sale_orders" string="Without Sale Orders" domain="[('sale_order_ids', '=', False)]"/>
+                <filter name="filter_with_purchase_orders" string="With Purchase Orders" domain="[('purchase_order_ids', '!=', False)]"/>
                 <filter name="filter_my_routes" string="My Routes" domain="[('create_uid', '=', uid)]"/>
 
                 <group>
@@ -109,18 +100,20 @@
                     <filter name="group_date_month" string="Month" domain="[]" context="{'group_by': 'date:month'}"/>
                     <filter name="group_date_year" string="Año" domain="[]" context="{'group_by': 'date:year'}"/>
                     <filter name="group_customer" string="Customer" domain="[]" context="{'group_by': 'customer_id'}"/>
-                    <filter name="group_driver" string="Driver" domain="[]" context="{'group_by': 'driver_id'}"/>
+                    <filter name="group_driver" string="Driver" domain="[]" context="{'group_by': 'driver_employee_id'}"/>
                     <filter name="group_vehicle" string="Vehicle" domain="[]" context="{'group_by': 'vehicle_id'}"/>
                     <filter name="group_branch" string="Branch" domain="[]" context="{'group_by': 'branch_id'}"/>
-                    <filter name="group_attendant" string="Attendant" domain="[]" context="{'group_by': 'attendant'}"/>
+                    <filter name="group_attendant" string="Attendant" domain="[]" context="{'group_by': 'attendant_id'}"/>
                     <filter name="group_courier" string="Courier Service" domain="[]" context="{'group_by': 'courier_service_id'}"/>
                     <filter name="group_payment_method" string="Payment Method" domain="[]" context="{'group_by': 'payment_method'}"/>
                     <filter name="group_payment_type" string="Payment Type" domain="[]" context="{'group_by': 'payment_type'}"/>
                     <filter name="group_service_type" string="Service Type" domain="[]" context="{'group_by': 'service_type'}"/>
+                    <filter name="group_failure_reason" string="Failure Reason" domain="[]" context="{'group_by': 'failure_reason'}"/>
                     <filter name="group_create_uid" string="Created by" domain="[]" context="{'group_by': 'create_uid'}"/>
                 </group>
 
                 <searchpanel>
+                    <field name="driver_employee_id" icon="fa-truck" enable_counters="1"/>
                     <field name="customer_id" icon="fa-filter" enable_counters="1"/>
                 </searchpanel>
             </search>
@@ -134,86 +127,133 @@
         <field name="arch" type="xml">
             <form string="Logistics Route">
                 <header>
-                    <button name="action_in_progress"
-                            string="Confirm"
-                            type="object"
-                            class="btn-primary"
-                            groups="arbz_delivery_route.group_logistics_user,arbz_delivery_route.group_logistics_manager"
+                    <button name="action_request" string="Confirm" type="object" class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_user"
                             invisible="state != 'draft'"/>
-                    <button name="next_status"
-                            string="Assigned"
-                            type="object"
-                            class="btn-primary"
-                            groups="arbz_delivery_route.group_logistics_manager"
+                    <button name="action_assign" string="Assign" type="object" class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_supervisor"
                             invisible="state != 'requested'"/>
-                    <button name="next_status"
-                            string="On Route"
-                            type="object"
-                            class="btn-primary"
-                            groups="arbz_delivery_route.group_logistics_manager"
+                    <button name="action_start" string="Start Route" type="object" class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_driver,arbz_delivery_route.group_logistics_supervisor"
                             invisible="state != 'assigned'"/>
-                    <button name="next_status"
-                            string="Delivery"
-                            type="object"
-                            class="btn-primary"
-                            groups="arbz_delivery_route.group_logistics_driver,arbz_delivery_route.group_logistics_manager"
+                    <button name="action_mark_arrived" string="Arrived" type="object"
+                            groups="arbz_delivery_route.group_logistics_driver,arbz_delivery_route.group_logistics_supervisor"
+                            invisible="state != 'on_route' or arrived_at"/>
+                    <button name="action_deliver" string="Delivered" type="object" class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_driver,arbz_delivery_route.group_logistics_supervisor"
                             invisible="state != 'on_route'"/>
-                    <button name="action_in_postponed"
-                            string="Reprogram"
-                            type="object"
-                            class="btn-primary"
-                            groups="arbz_delivery_route.group_logistics_supervisor,arbz_delivery_route.group_logistics_manager"
+                    <button name="action_postpone" string="Postpone" type="object" class="btn-secondary"
+                            groups="arbz_delivery_route.group_logistics_driver,arbz_delivery_route.group_logistics_supervisor"
+                            invisible="state != 'on_route'"/>
+                    <button name="action_reschedule" string="Reprogram" type="object" class="btn-primary"
+                            groups="arbz_delivery_route.group_logistics_supervisor"
                             invisible="state != 'postponed'"/>
-                    <button name="action_postpone"
-                            string="Postpone"
-                            type="object"
-                            class="btn-secondary"
-                            groups="arbz_delivery_route.group_logistics_supervisor,arbz_delivery_route.group_logistics_manager"
-                            invisible="state != 'on_route'"/>
-                    <button name="action_cancel"
-                            string="Cancel"
-                            type="object"
-                            class="btn-danger"
-                            groups="arbz_delivery_route.group_logistics_supervisor,arbz_delivery_route.group_logistics_manager"
-                            invisible="state in ('cancelled', 'delivered')"/>
-                    <progressbar field="state" colors="{'delivered': 'success', 'postponed': 'warning', 'cancelled': 'danger'}"/>
-
+                    <button name="action_unassign" string="Unassign" type="object"
+                            groups="arbz_delivery_route.group_logistics_supervisor"
+                            invisible="state != 'assigned'"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-danger"
+                            groups="arbz_delivery_route.group_logistics_supervisor"
+                            invisible="state not in ('draft', 'requested', 'assigned', 'postponed')"
+                            confirm="Cancel this stop?"/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object"
+                            groups="arbz_delivery_route.group_logistics_manager"
+                            invisible="state != 'cancelled'"/>
+                    <button name="%(action_report_delivery_proof)d" string="Print Proof" type="action"
+                            invisible="state != 'delivered'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,requested,assigned,on_route,delivered"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_navigation" type="object" class="oe_stat_button" icon="fa-location-arrow"
+                                invisible="not navigation_url">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Navigate</span>
+                            </div>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Out of geofence" bg_color="text-bg-warning" invisible="not geofence_exceeded"/>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1>
-                            <field name="name" placeholder="E.g: Business Trip Name" required="1"/>
+                            <field name="name"/>
                         </h1>
                     </div>
                     <group col="2">
                         <group>
                             <field name="customer_id"/>
                             <field name="branch_id"/>
-                            <field name="attendant"/>
+                            <field name="attendant_id"/>
                             <field name="courier_service_id"/>
                             <field name="payment_method"/>
                             <field name="payment_type"/>
                             <field name="service_type"/>
                         </group>
                         <group>
-                            <field name="date" string="Fecha de ruta"/>
+                            <field name="date"/>
+                            <field name="planned_arrival"/>
                             <field name="start_time" widget="float_time"/>
                             <field name="end_time" widget="float_time"/>
                             <field name="lunch_start_time" widget="float_time"/>
                             <field name="lunch_end_time" widget="float_time"/>
-                            <field name="driver_id"/>
-                            <field name="vehicle_id"/>
+                            <field name="driver_employee_id" options="{'no_create': True}"/>
+                            <field name="vehicle_id" options="{'no_create': True}"/>
+                            <field name="sequence"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="navigation_url" invisible="1"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Purchase Orders">
-                            <field name="purchase_order_id"/>
+                        <page string="Execution" name="execution">
+                            <group col="2">
+                                <group string="Timeline">
+                                    <field name="started_at"/>
+                                    <field name="arrived_at"/>
+                                    <field name="delivered_at"/>
+                                </group>
+                                <group string="Location">
+                                    <field name="branch_latitude"/>
+                                    <field name="branch_longitude"/>
+                                    <field name="delivery_latitude"/>
+                                    <field name="delivery_longitude"/>
+                                    <field name="geofence_distance_m"/>
+                                    <field name="geofence_exceeded" invisible="1"/>
+                                    <button name="action_geolocalize_branches" type="object" string="Geolocate Branch"
+                                            icon="fa-map-marker" class="btn-link" colspan="2"/>
+                                </group>
+                            </group>
                         </page>
-                        <page string="Sale Orders">
-                            <field name="sale_order_id"/>
+                        <page string="Proof of Delivery" name="proof">
+                            <group col="2">
+                                <group>
+                                    <field name="received_by_name"/>
+                                    <field name="delivery_signature" widget="signature"/>
+                                </group>
+                                <group>
+                                    <field name="failure_reason"/>
+                                    <field name="failure_note" invisible="not failure_reason"/>
+                                </group>
+                            </group>
+                            <field name="delivery_photo_ids" widget="many2many_binary"/>
                         </page>
-                        <page string="Observations">
+                        <page string="Driver Events" name="events">
+                            <field name="event_ids" readonly="1">
+                                <list>
+                                    <field name="event_datetime"/>
+                                    <field name="event_type"/>
+                                    <field name="employee_id"/>
+                                    <field name="latitude"/>
+                                    <field name="longitude"/>
+                                    <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Purchase Orders" name="purchase_orders">
+                            <field name="purchase_order_ids"/>
+                        </page>
+                        <page string="Sale Orders" name="sale_orders">
+                            <field name="sale_order_ids"/>
+                        </page>
+                        <page string="Observations" name="observations">
                             <field name="observation"/>
                         </page>
                     </notebook>
@@ -230,23 +270,88 @@
         <field name="arch" type="xml">
             <kanban default_group_by="state" class="o_kanban_small_column">
                 <field name="state"/>
-                <field name="name"/>
-                <field name="customer_id"/>
-                <field name="service_type"/>
                 <progressbar field="state" colors='{"delivered": "success", "postponed": "warning", "cancelled": "danger"}'/>
                 <templates>
                     <t t-name="card">
-                        <div class="oe_kanban_global_click">
-                            <div class="oe_kanban_details">
-                                <h4><field name="name"/></h4>
-                                <div><strong>Customer:</strong> <field name="customer_id"/></div>
-                                <div><strong>Service Type:</strong> <field name="service_type"/></div>
-                                <div><strong>Fecha de ruta:</strong> <field name="date"/></div>
-                            </div>
-                        </div>
+                        <field name="name" class="fw-bold fs-5"/>
+                        <div><strong>Customer:</strong> <field name="customer_id"/></div>
+                        <div><strong>Branch:</strong> <field name="branch_id"/></div>
+                        <div><strong>Service Type:</strong> <field name="service_type"/></div>
+                        <div><strong>Fecha de ruta:</strong> <field name="date"/></div>
+                        <footer>
+                            <field name="vehicle_id"/>
+                            <field name="driver_employee_id" widget="many2one_avatar_employee" class="ms-auto"/>
+                        </footer>
                     </t>
                 </templates>
             </kanban>
         </field>
+    </record>
+
+    <!-- Vista Mapa (web_map): ruta optimizada por chofer/día -->
+    <record id="view_logistics_route_map" model="ir.ui.view">
+        <field name="name">logistics.route.map</field>
+        <field name="model">logistics.route</field>
+        <field name="arch" type="xml">
+            <map res_partner="branch_id" routing="1" default_order="sequence" allow_resequence="1" panel_title="Stops">
+                <field name="name" string="Stop"/>
+                <field name="customer_id" string="Customer"/>
+                <field name="driver_employee_id" string="Driver"/>
+                <field name="planned_arrival" string="Planned Arrival"/>
+                <field name="state" string="Status"/>
+            </map>
+        </field>
+    </record>
+
+    <!-- Vista Calendario -->
+    <record id="view_logistics_route_calendar" model="ir.ui.view">
+        <field name="name">logistics.route.calendar</field>
+        <field name="model">logistics.route</field>
+        <field name="arch" type="xml">
+            <calendar string="Logistics Routes" date_start="date" color="driver_employee_id" mode="week" quick_create="0">
+                <field name="customer_id"/>
+                <field name="branch_id"/>
+                <field name="driver_employee_id" filters="1"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Vista Pivot / Gráfica para KPIs -->
+    <record id="view_logistics_route_pivot" model="ir.ui.view">
+        <field name="name">logistics.route.pivot</field>
+        <field name="model">logistics.route</field>
+        <field name="arch" type="xml">
+            <pivot string="Logistics Analysis">
+                <field name="driver_employee_id" type="row"/>
+                <field name="state" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_logistics_route_graph" model="ir.ui.view">
+        <field name="name">logistics.route.graph</field>
+        <field name="model">logistics.route</field>
+        <field name="arch" type="xml">
+            <graph string="Logistics Analysis" type="bar" stacked="1">
+                <field name="date" interval="week"/>
+                <field name="state"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Acciones -->
+    <record id="action_logistics" model="ir.actions.act_window">
+        <field name="name">Logistics</field>
+        <field name="res_model">logistics.route</field>
+        <field name="view_mode">kanban,list,map,calendar,pivot,graph,form</field>
+        <field name="context">{'search_default_filter_date_this_month': 1}</field>
+    </record>
+
+    <record id="action_logistics_dispatch_today" model="ir.actions.act_window">
+        <field name="name">Today's Dispatch</field>
+        <field name="res_model">logistics.route</field>
+        <field name="view_mode">map,list,form</field>
+        <field name="context">{'search_default_filter_date_today': 1, 'search_default_group_driver': 1}</field>
     </record>
 </odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_logistics_route_optimize_wizard_form" model="ir.ui.view">
+        <field name="name">logistics.route.optimize.wizard.form</field>
+        <field name="model">logistics.route.optimize.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Optimize Routes">
+                <group>
+                    <group>
+                        <field name="route_date"/>
+                        <field name="route_count" string="Stops to Plan"/>
+                        <field name="routing_provider" string="Routing Engine"/>
+                    </group>
+                    <group>
+                        <field name="keep_assignment"/>
+                        <field name="confirm_assignment"/>
+                    </group>
+                </group>
+                <field name="driver_employee_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                <div class="text-muted mt-2">
+                    Stops are distributed among the selected drivers that have a vehicle, respecting the customer
+                    opening hours, their lunch closure and the drivers' shift. Branches without coordinates are
+                    geolocated first.
+                </div>
+                <footer>
+                    <button name="action_optimize" string="Optimize" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_logistics_route_optimize_wizard" model="ir.actions.act_window">
+        <field name="name">Optimize Routes</field>
+        <field name="res_model">logistics.route.optimize.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_logistics_route"/>
+        <field name="binding_view_types">list,map</field>
+        <field name="group_ids" eval="[Command.link(ref('group_logistics_supervisor'))]"/>
+    </record>
+</odoo>

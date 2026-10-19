@@ -4,53 +4,159 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-14 01:26+0000\n"
-"PO-Revision-Date: 2023-07-20 20:36-0600\n"
+"POT-Creation-Date: 2026-10-16 23:15+0000\n"
+"PO-Revision-Date: 2026-10-16 23:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_MX\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__res_partner__license_type__federal
-msgid " federal driver`s license"
-msgstr " licencia de Conducir Federal"
+#. odoo-python
+#: code:addons/arbz_delivery_route/wizard/logistics_route_optimize_wizard.py:0
+msgid "%(planned)s stops planned for %(drivers)s drivers."
+msgstr "%(planned)s paradas planeadas para %(drivers)s choferes."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/fleet_vehicle.py:0
+#: code:addons/arbz_delivery_route/models/hr_employee.py:0
+msgid "%s (GPS)"
+msgstr "%s (GPS)"
+
+#. module: arbz_delivery_route
+#: model:ir.actions.report,print_report_name:arbz_delivery_route.action_report_delivery_proof
+msgid "'Proof - %s' % object.name"
+msgstr "'Comprobante - %s' % object.name"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid ""
+"<br/>\n"
+"                                <strong>Branch:</strong>"
+msgstr ""
+"<br/>\n"
+"                                <strong>Sucursal:</strong>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid ""
+"<br/>\n"
+"                                <strong>Delivered At:</strong>"
+msgstr ""
+"<br/>\n"
+"                                <strong>Entregado el:</strong>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid ""
+"<br/>\n"
+"                                <strong>Distance to Branch:</strong>"
+msgstr ""
+"<br/>\n"
+"                                <strong>Distancia a la sucursal:</strong>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid ""
+"<br/>\n"
+"                                <strong>Driver:</strong>"
+msgstr ""
+"<br/>\n"
+"                                <strong>Chofer:</strong>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid ""
+"<br/>\n"
+"                                <strong>Vehicle:</strong>"
+msgstr ""
+"<br/>\n"
+"                                <strong>Vehículo:</strong>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "<span class=\"o_stat_text\">Navigate</span>"
+msgstr "<span class=\"o_stat_text\">Navegar</span>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "<span> days</span>"
+msgstr "<span> días</span>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "<span> meters</span>"
+msgstr "<span> metros</span>"
 
 #. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.logistics_route_kanban_view
-msgid "<strong>Date Route: </strong>"
-msgstr "<strong>Fecha de Ruta: </strong>"
+msgid "<strong>Branch:</strong>"
+msgstr "<strong>Sucursal:</strong>"
 
 #. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.logistics_route_kanban_view
-msgid "<strong>Driver: </strong>"
-msgstr "<strong>Conductor: </strong>"
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid "<strong>Customer:</strong>"
+msgstr "<strong>Cliente:</strong>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid "<strong>Delivery Location:</strong>"
+msgstr "<strong>Ubicación de entrega:</strong>"
 
 #. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.logistics_route_kanban_view
-msgid "<strong>Partner: </strong>"
-msgstr "<strong>Cliente: </strong>"
+msgid "<strong>Fecha de ruta:</strong>"
+msgstr "<strong>Fecha de ruta:</strong>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid "<strong>Received By:</strong>"
+msgstr "<strong>Recibió:</strong>"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid "<strong>Route Date:</strong>"
+msgstr "<strong>Fecha de ruta:</strong>"
 
 #. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.logistics_route_kanban_view
-msgid "<strong>Service Type: </strong>"
-msgstr "<strong>Tipo de servicio</strong>"
+msgid "<strong>Service Type:</strong>"
+msgstr "<strong>Tipo de servicio:</strong>"
 
 #. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.logistics_route_kanban_view
-msgid "<strong>Star Time: </strong>"
-msgstr "<strong>Horario de Inicio: </strong>"
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_position.py:0
+msgid "A GPS position belongs to a driver or to a vehicle."
+msgstr "Una posición GPS debe pertenecer a un chofer o a un vehículo."
 
 #. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.logistics_route_kanban_view
-msgid "<strong>Vehicle: </strong>"
-msgstr "Vehiculo"
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "A note event needs a text."
+msgstr "Un evento de nota requiere un texto."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_res_config_settings__logistics_require_proof_of_delivery
+msgid "A signature or a photo is mandatory to mark a stop as delivered."
+msgstr "Se requiere firma o foto para marcar una parada como entregada."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "A signature or a photo is required to deliver: %s"
+msgstr "Se requiere firma o foto para entregar: %s"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__accuracy_m
+msgid "Accuracy (m)"
+msgstr "Precisión (m)"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__message_needaction
@@ -78,13 +184,40 @@ msgid "Activity Type Icon"
 msgstr "Ícono de Tipo de Actividad"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__failure_reason__address_not_found
+msgid "Address not found"
+msgstr "Dirección no encontrada"
+
+#. module: arbz_delivery_route
 #: model:ir.module.category,name:arbz_delivery_route.module_category_abz_logistics
+#: model:res.groups.privilege,name:arbz_delivery_route.privilege_abz_logistics
 msgid "Airibuz Logistics"
 msgstr "Airibuz Logística"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__state__assigned
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route_event__event_type__arrive
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Arrived"
+msgstr "Llegué"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__arrived_at
+msgid "Arrived At"
+msgstr "Llegada"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Assign"
+msgstr "Asignar"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__confirm_assignment
+msgid "Assign Stops After Optimizing"
+msgstr "Asignar paradas al optimizar"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__state__assigned
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Assigned"
 msgstr "Asignado"
 
@@ -94,39 +227,85 @@ msgid "Attachment Count"
 msgstr "Nº de archivos adjuntos"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__attendant
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__attendant_id
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Attendant"
-msgstr "Atiende"
+msgstr "Encargado"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Año"
+msgstr "Año"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Año pasado"
+msgstr "Año pasado"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__branch_id
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Branch"
 msgstr "Sucursal"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__branch_latitude
+msgid "Branch Latitude"
+msgstr "Latitud de sucursal"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__branch_longitude
+msgid "Branch Longitude"
+msgstr "Longitud de sucursal"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Branch Not Geolocated"
+msgstr "Sucursal sin geolocalizar"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__failure_reason__closed
+msgid "Branch closed"
+msgstr "Sucursal cerrada"
+
+#. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_optimize_wizard_form
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Cancel this stop?"
+msgstr "¿Cancelar esta parada?"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__state__cancelled
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Cancelled"
 msgstr "Cancelada"
 
 #. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Card"
+msgstr "Tarjeta"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__payment_method__cash
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Cash"
 msgstr "Efectivo"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__payment_method__check
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Check"
 msgstr "Cheque"
 
 #. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
-msgid "Code plus"
-msgstr "Código plus"
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Collection"
+msgstr "Recolección"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__service_type__collection_paid
@@ -139,6 +318,23 @@ msgid "Collection Unpaid"
 msgstr "Recolección por Pagar"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__company_id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__company_id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__company_id
+msgid "Company"
+msgstr "Empresa"
+
+#. module: arbz_delivery_route
+#: model:ir.model,name:arbz_delivery_route.model_res_config_settings
+msgid "Config Settings"
+msgstr "Ajustes de configuración"
+
+#. module: arbz_delivery_route
+#: model:ir.ui.menu,name:arbz_delivery_route.menu_logistics_configuration
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
 msgid "Confirm"
 msgstr "Confirmar"
@@ -149,17 +345,37 @@ msgid "Contact"
 msgstr "Contacto"
 
 #. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route_optimizer.py:0
+msgid "Could not reach Google to authenticate."
+msgstr "No se pudo conectar con Google para autenticar."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route_optimizer.py:0
+msgid "Could not reach the %s routing service."
+msgstr "No se pudo conectar con el servicio de rutas %s."
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__courier_service_id
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Courier Service"
 msgstr "Paquetería"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__create_uid
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__create_uid
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__create_uid
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__create_uid
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__create_date
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__create_date
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__create_date
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__create_date
 msgid "Created on"
 msgstr "Creado el"
 
@@ -170,25 +386,31 @@ msgstr "Tarjeta de Credito"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__customer_id
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_map
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Customer"
 msgstr "Cliente"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__date
-#, fuzzy
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__failure_reason__customer_absent
+msgid "Customer absent"
+msgstr "Cliente ausente"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__failure_reason__damaged
+msgid "Damaged goods"
+msgstr "Mercancía dañada"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Date"
-msgstr "Fecha de Ruta"
+msgstr "Fecha"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__days_to_expire
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__days_to_expire
-msgid "Days To Expire"
-msgstr "Días para Expirar"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__logistics_license_days_to_expire
 msgid "Days to Expire"
-msgstr "Días para Expirar"
+msgstr "Días para vencer"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__payment_method__debit_card
@@ -196,40 +418,148 @@ msgid "Debit Card"
 msgstr "Tarjeta de debito"
 
 #. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Deferred / Installments"
+msgstr "Diferido / Parcialidades"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__state__delivered
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route_event__event_type__deliver
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Delivered"
 msgstr "Entregado"
 
 #. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
-msgid "Delivery"
-msgstr "Entregar"
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__delivered_at
+msgid "Delivered At"
+msgstr "Entregado el"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Delivered Out of Geofence"
+msgstr "Entregado fuera de geocerca"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_res_config_settings__logistics_geofence_radius_m
+msgid ""
+"Deliveries registered farther than this distance from the branch are "
+"flagged. 0 disables it."
+msgstr ""
+"Las entregas registradas a mayor distancia de la sucursal se marcan. 0 lo "
+"desactiva."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__delivery_latitude
+msgid "Delivery Latitude"
+msgstr "Latitud de entrega"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__delivery_longitude
+msgid "Delivery Longitude"
+msgstr "Longitud de entrega"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__delivery_photo_ids
+msgid "Delivery Photos"
+msgstr "Fotos de entrega"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_depot_partner_id
+msgid "Depot"
+msgstr "Base de salida"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__service_type__direct
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Direct"
 msgstr "Directo"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_fleet_vehicle__display_name
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__display_name
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__display_name
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__display_name
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__display_name
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimizer__display_name
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__display_name
 msgid "Display Name"
-msgstr "Nombre"
+msgstr "Nombre en pantalla"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__geofence_distance_m
+msgid "Distance to Branch (m)"
+msgstr "Distancia a la sucursal (m)"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid "Document"
+msgstr "Documento"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__state__draft
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Draft"
 msgstr "Borrador"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__driver_id
-#, fuzzy
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__employee_id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__driver_employee_id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__employee_id
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.fleet_vehicle_view_map_logistics
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_hr_employee_form_logistics
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_hr_employee_map_logistics_driver
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_position_search
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_map
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Driver"
-msgstr "Conductor"
+msgstr "Chofer"
 
 #. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
-msgid "E.g:  business trip name"
-msgstr "Por ejemplo: nombre del viaje de negocios"
+msgid "Driver Events"
+msgstr "Eventos del chofer"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_hr_employee_form_logistics
+msgid "Driver License"
+msgstr "Licencia de conducir"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__logistics_license_number
+msgid "Driver License ID"
+msgstr "Número de licencia"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__driver_user_id
+msgid "Driver User"
+msgstr "Usuario del chofer"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/hr_employee.py:0
+msgid "Driver license expiring"
+msgstr "Licencia de conducir por vencer"
+
+#. module: arbz_delivery_route
+#: model:ir.actions.act_window,name:arbz_delivery_route.action_logistics_drivers
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__driver_employee_ids
+#: model:ir.ui.menu,name:arbz_delivery_route.menu_logistics_drivers
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_hr_employee_list_logistics_driver
+msgid "Drivers"
+msgstr "Choferes"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "Drivers must capture a signature or a photo to deliver."
+msgstr "Los choferes deben capturar firma o foto para entregar."
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "Drivers' Shift"
+msgstr "Turno de choferes"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__payment_method__eft
@@ -237,9 +567,87 @@ msgid "Electronic Funds Transfer"
 msgstr "Trasferencia Electrónica de Fondos"
 
 #. module: arbz_delivery_route
+#: model:ir.model,name:arbz_delivery_route.model_hr_employee
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__end_time
 msgid "End Time"
 msgstr "Horario de Cierre"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "End time should be greater than start time!"
+msgstr "¡La hora de fin debe ser mayor que la hora de inicio!"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid ""
+"Engine used by Optimize Routes to distribute and order the stops of a day."
+msgstr ""
+"Motor que usa Optimizar rutas para repartir y ordenar las paradas del día."
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Este año"
+msgstr "Este año"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Este mes"
+msgstr "Este mes"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__event_datetime
+msgid "Event Datetime"
+msgstr "Fecha del evento"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__event_type
+msgid "Event Type"
+msgstr "Tipo de evento"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__event_ids
+msgid "Events"
+msgstr "Eventos"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Execution"
+msgstr "Ejecución"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route_event__event_type__fail
+msgid "Failed"
+msgstr "Fallida"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__failure_note
+msgid "Failure Note"
+msgstr "Nota de falla"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__failure_reason
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Failure Reason"
+msgstr "Motivo de falla"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__hr_employee__logistics_license_type__federal
+msgid "Federal driver license"
+msgstr "Licencia federal"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid ""
+"Flag deliveries registered farther than this distance from the branch (0 "
+"disables it)."
+msgstr ""
+"Marcar entregas registradas a mayor distancia de la sucursal (0 lo "
+"desactiva)."
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__message_follower_ids
@@ -257,9 +665,106 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr "Icono de Font Awesome ej. fa-tasks"
 
 #. module: arbz_delivery_route
+#: model:ir.actions.act_window,name:arbz_delivery_route.action_logistics_positions
+#: model:ir.ui.menu,name:arbz_delivery_route.menu_logistics_positions
+msgid "GPS History"
+msgstr "Historial GPS"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "GPS History Retention"
+msgstr "Conservación del historial GPS"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_position_retention_days
+msgid "GPS History Retention (days)"
+msgstr "Conservación del historial GPS (días)"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_fleet_vehicle__logistics_position_ids
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__logistics_position_ids
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_position_list
+msgid "GPS Positions"
+msgstr "Posiciones GPS"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_position__source__device
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_position_search
+msgid "GPS Tracker"
+msgstr "Rastreador GPS"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_fleet_vehicle__gps_device_identifier
+msgid "GPS Tracker ID"
+msgstr "ID del rastreador GPS"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.fleet_vehicle_view_form_logistics
+msgid "GPS Tracking"
+msgstr "Rastreo GPS"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__geofence_exceeded
+msgid "Geofence Exceeded"
+msgstr "Fuera de geocerca"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "Geofence Radius"
+msgstr "Radio de geocerca"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_geofence_radius_m
+msgid "Geofence Radius (m)"
+msgstr "Radio de geocerca (m)"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Geolocate Branch"
+msgstr "Geolocalizar sucursal"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route_optimizer.py:0
+msgid "Geolocate the depot address (%s) before optimizing."
+msgstr ""
+"Geolocalice la dirección de la base de salida (%s) antes de optimizar."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_google_project_id
+msgid "Google Cloud Project"
+msgstr "Proyecto de Google Cloud"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__res_config_settings__logistics_routing_provider__google
+msgid "Google Route Optimization API"
+msgstr "Google Route Optimization API"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_google_service_account
+msgid "Google Service Account Key (JSON)"
+msgstr "Llave de cuenta de servicio de Google (JSON)"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route_optimizer.py:0
+msgid "Google rejected the service account credentials."
+msgstr "Google rechazó las credenciales de la cuenta de servicio."
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__has_message
 msgid "Has Message"
 msgstr "Tiene mensaje"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__heading_deg
+msgid "Heading (°)"
+msgstr "Rumbo (°)"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Home"
+msgstr "Domicilio"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__service_type__home_paid
@@ -272,9 +777,23 @@ msgid "Home Unpaid"
 msgstr "Domicilio por Pagar"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_fleet_vehicle__id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__id
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimizer__id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__id
 msgid "ID"
 msgstr "Identificador"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_fleet_vehicle__gps_device_identifier
+msgid "IMEI or unique id that the GPS platform sends with every position."
+msgstr ""
+"IMEI o identificador único que la plataforma GPS envía con cada posición."
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__activity_exception_icon
@@ -288,7 +807,6 @@ msgstr "Ícono para indicar una actividad de excepción."
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route__message_needaction
-#: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Si está marcado hay nuevos mensajes que requieren su atención."
 
@@ -299,10 +817,14 @@ msgid "If checked, some messages have a delivery error."
 msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,help:arbz_delivery_route.field_res_partner__license_type
-#: model:ir.model.fields,help:arbz_delivery_route.field_res_users__license_type
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__ignition
+msgid "Ignition"
+msgstr "Encendido"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_hr_employee__logistics_license_type
 msgid "Indicates if the license is issued by the state or by the federation"
-msgstr "Indica si la licencia es emitida por el estado o por la federación"
+msgstr "Indica si la licencia es expedida por el estado o por la federación"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__payment_type__installment_or_deferred
@@ -310,78 +832,136 @@ msgid "Installment or deferred"
 msgstr "Pago Diferido o en parcialidades"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__its_courier_service
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__its_courier_service
+msgid "Is Courier Service"
+msgstr "es Paqueteria"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__message_is_follower
 msgid "Is Follower"
 msgstr "Es Seguidor"
 
 #. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
-msgid "Its courier service"
-msgstr "Es una paqueteria"
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__is_logistics_driver
+msgid "Is Logistics Driver"
+msgstr "Es chofer de logística"
 
 #. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
-msgid "Its vehicle drivers"
-msgstr "Son conductores de vehículos"
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__keep_assignment
+msgid "Keep Current Drivers"
+msgstr "Conservar choferes actuales"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route____last_update
-msgid "Last Modified on"
-msgstr "Última modificación el"
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.fleet_vehicle_view_map_logistics
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_hr_employee_map_logistics_driver
+msgid "Last Position"
+msgstr "Última posición"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_fleet_vehicle__logistics_last_position_at
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__logistics_last_position_at
+msgid "Last Position At"
+msgstr "Última posición el"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_fleet_vehicle__logistics_last_speed_kmh
+msgid "Last Speed (km/h)"
+msgstr "Última velocidad (km/h)"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__write_uid
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__write_uid
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__write_uid
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__write_date
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__write_date
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__write_date
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__write_date
 msgid "Last Updated on"
 msgstr "Última modificación en"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__license_expiration
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__license_expiration
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__latitude
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__latitude
+msgid "Latitude"
+msgstr "Latitud"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_res_config_settings__logistics_vroom_url
+msgid ""
+"Leave empty to use OpenRouteService "
+"(https://api.openrouteservice.org/optimization) or set the URL of your self-"
+"hosted VROOM server, e.g. http://vroom:3000/"
+msgstr ""
+"Déjelo vacío para usar OpenRouteService "
+"(https://api.openrouteservice.org/optimization) o indique la URL de su "
+"servidor VROOM propio, p. ej. http://vroom:3000/"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__logistics_license_expiration
 msgid "License Expiration"
-msgstr "Fecha de expiracion de Licencia"
+msgstr "Vencimiento de licencia"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__driver_license
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__driver_license
-msgid "License ID"
-msgstr "Numero de Licencia"
-
-#. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__license_subtype
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__license_subtype
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__logistics_license_subtype
 msgid "License Subtype"
-msgstr "Subtipo de Licencia"
+msgstr "Subtipo de licencia"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__license_type
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__license_type
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__logistics_license_type
 msgid "License Type"
-msgstr "Tipo de Licencia"
+msgstr "Tipo de licencia"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__license_valid_from
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__license_valid_from
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__logistics_license_valid_from
 msgid "License Valid From"
-msgstr "Licencia  Valida desde"
+msgstr "Licencia vigente desde"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_fleet_vehicle__logistics_tracking_partner_id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_hr_employee__logistics_tracking_partner_id
+msgid "Live Position Marker"
+msgstr "Marcador de posición en vivo"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Location"
+msgstr "Ubicación"
 
 #. module: arbz_delivery_route
 #: model:ir.actions.act_window,name:arbz_delivery_route.action_logistics
-#: model:ir.model,name:arbz_delivery_route.model_logistics_route
-#: model:ir.ui.menu,name:arbz_delivery_route.logistics_menu_act
 #: model:ir.ui.menu,name:arbz_delivery_route.menu_logistics_main_root
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_hr_employee_form_logistics
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
 msgid "Logistics"
-msgstr "Logistica"
+msgstr "Logística"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_graph
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_pivot
+msgid "Logistics Analysis"
+msgstr "Análisis de logística"
 
 #. module: arbz_delivery_route
 #: model:res.groups,name:arbz_delivery_route.group_logistics_driver
 msgid "Logistics Driver"
-msgstr "Conductor logístico"
+msgstr "Chofer de logística"
+
+#. module: arbz_delivery_route
+#: model:res.groups,name:arbz_delivery_route.group_logistics_gps_integration
+msgid "Logistics GPS Integration"
+msgstr "Integración GPS de logística"
+
+#. module: arbz_delivery_route
+#: model:ir.model,name:arbz_delivery_route.model_logistics_position
+msgid "Logistics GPS Position"
+msgstr "Posición GPS de logística"
 
 #. module: arbz_delivery_route
 #: model:res.groups,name:arbz_delivery_route.group_logistics_manager
@@ -389,29 +969,57 @@ msgid "Logistics Manager"
 msgstr "Gerente de Logística"
 
 #. module: arbz_delivery_route
-#: model:ir.model,name:arbz_delivery_route.model_logistics_route_report_wizard
-msgid "Logistics Report Wizard"
-msgstr "Asistente para informes logísticos"
-
-#. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
 msgid "Logistics Route"
-msgstr "Ruta de Logistica"
+msgstr "Ruta de logística"
 
 #. module: arbz_delivery_route
+#: model:ir.model,name:arbz_delivery_route.model_logistics_route_event
+msgid "Logistics Route Event"
+msgstr "Evento de ruta de logística"
+
+#. module: arbz_delivery_route
+#: model:ir.model,name:arbz_delivery_route.model_logistics_route_optimizer
+msgid "Logistics Route Optimizer"
+msgstr "Optimizador de rutas de logística"
+
+#. module: arbz_delivery_route
+#: model:ir.model,name:arbz_delivery_route.model_logistics_route
+msgid "Logistics Route Stop"
+msgstr "Parada de ruta de logística"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_calendar
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_tree
 msgid "Logistics Routes"
 msgstr "Rutas logísticas"
 
 #. module: arbz_delivery_route
-#: model:res.groups,name:arbz_delivery_route.group_logistics_user
-msgid "Logistics User"
-msgstr "Usuario de Logistica"
+#: model:res.groups,name:arbz_delivery_route.group_logistics_supervisor
+msgid "Logistics Supervisor"
+msgstr "Supervisor de logística"
 
 #. module: arbz_delivery_route
-#: model:res.groups,name:arbz_delivery_route.group_logistics_supervisor
-msgid "Logistics supervisor"
-msgstr "Supervisor de logística"
+#: model:res.groups,name:arbz_delivery_route.group_logistics_user
+msgid "Logistics User"
+msgstr "Usuario de logística"
+
+#. module: arbz_delivery_route
+#: model:ir.actions.server,name:arbz_delivery_route.ir_cron_driver_license_expiration_ir_actions_server
+msgid "Logistics: driver license expiration reminder"
+msgstr "Logística: recordatorio de vencimiento de licencia"
+
+#. module: arbz_delivery_route
+#: model:ir.actions.server,name:arbz_delivery_route.ir_cron_purge_driver_positions_ir_actions_server
+msgid "Logistics: purge old GPS positions"
+msgstr "Logística: depurar posiciones GPS antiguas"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__longitude
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__longitude
+msgid "Longitude"
+msgstr "Longitud"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__lunch_end_time
@@ -424,9 +1032,15 @@ msgid "Lunch Start Time"
 msgstr "Termino de comida"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__message_main_attachment_id
-msgid "Main Attachment"
-msgstr "Adjuntos principales"
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "Lunch end time should be greater than lunch start time!"
+msgstr "¡El fin de la comida debe ser mayor que el inicio de la comida!"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Mes pasado"
+msgstr "Mes pasado"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__message_has_error
@@ -439,9 +1053,46 @@ msgid "Messages"
 msgstr "Mensajes"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_service_minutes
+msgid "Minutes per Stop"
+msgstr "Minutos por parada"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_position__source__app
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_position_search
+msgid "Mobile App"
+msgstr "App móvil"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "Mobile Session Duration"
+msgstr "Duración de sesión móvil"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_api_key_days
+msgid "Mobile Session Duration (days)"
+msgstr "Duración de sesión móvil (días)"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Month"
+msgstr "Mes"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route_optimize_wizard__confirm_assignment
+msgid "Move the planned stops from \"Requested\" to \"Assigned\"."
+msgstr "Pasar las paradas planeadas de \"Solicitado\" a \"Asignado\"."
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__my_activity_date_deadline
 msgid "My Activity Deadline"
 msgstr "Fecha límite de Mi Actividad"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "My Routes"
+msgstr "Mis rutas"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__name
@@ -449,15 +1100,15 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: arbz_delivery_route
-#: code:addons/arbz_delivery_route/models/logistics_route.py:0
-#, python-format
-msgid "New"
-msgstr "Nuevo"
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__navigation_url
+msgid "Navigation Url"
+msgstr "URL de navegación"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Siguiente evento del calendario de actividades"
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "New"
+msgstr "Nuevo"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__activity_date_deadline
@@ -475,6 +1126,27 @@ msgid "Next Activity Type"
 msgstr "Siguiente Actividad"
 
 #. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route_optimizer.py:0
+msgid "None of the selected drivers has a vehicle assigned in Fleet."
+msgstr ""
+"Ninguno de los choferes seleccionados tiene vehículo asignado en Flota."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/wizard/logistics_route_optimize_wizard.py:0
+msgid ""
+"Not planned (no coordinates, closed during the shift or no capacity): %s"
+msgstr ""
+"Sin planear (sin coordenadas, cerrado durante el turno o sin capacidad): %s"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__note
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route_event__event_type__note
+msgid "Note"
+msgstr "Nota"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Numero de Acciones"
@@ -486,18 +1158,13 @@ msgstr "Numero de Errores"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Número de mensajes que requieren una acción"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route__message_has_error_counter
 msgid "Number of messages with delivery error"
 msgstr "Número de mensajes con error de envío"
-
-#. module: arbz_delivery_route
-#: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route__message_unread_counter
-msgid "Number of unread messages"
-msgstr "Mensajes sin leer"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__observation
@@ -510,6 +1177,11 @@ msgid "Observations"
 msgstr "Obervaciones"
 
 #. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Occur"
+msgstr "Ocurre"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__service_type__occur_paid
 msgid "Occur Paid"
 msgstr "Ocurre Pagado"
@@ -520,36 +1192,194 @@ msgid "Occur Unpaid"
 msgstr "Ocurre por pagar"
 
 #. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "Older GPS positions are purged every day."
+msgstr "Las posiciones GPS más antiguas se depuran diariamente."
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__state__on_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "On Route"
 msgstr "En Ruta"
 
 #. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "Only logistics managers can reopen cancelled stops."
+msgstr "Solo los gerentes de logística pueden reabrir paradas canceladas."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "Only logistics supervisors can perform this action."
+msgstr "Solo los supervisores de logística pueden realizar esta acción."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "Only logistics users can confirm stops."
+msgstr "Solo los usuarios de logística pueden confirmar paradas."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route_optimize_wizard__keep_assignment
+msgid "Only reorder: stops that already have a driver stay with that driver."
+msgstr ""
+"Solo reordenar: las paradas que ya tienen chofer se quedan con ese chofer."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "Only stops on route can be marked as arrived."
+msgstr "Solo las paradas en ruta pueden marcarse como llegada."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_vroom_api_key
+msgid "OpenRouteService API Key"
+msgstr "API key de OpenRouteService"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_optimize_wizard_form
+msgid "Optimize"
+msgstr "Optimizar"
+
+#. module: arbz_delivery_route
+#: model:ir.model,name:arbz_delivery_route.model_logistics_route_optimize_wizard
+msgid "Optimize Logistics Routes"
+msgstr "Optimizar rutas de logística"
+
+#. module: arbz_delivery_route
+#: model:ir.actions.act_window,name:arbz_delivery_route.action_logistics_route_optimize_wizard
+#: model:ir.ui.menu,name:arbz_delivery_route.menu_logistics_optimize_routes
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_optimize_wizard_form
+msgid "Optimize Routes"
+msgstr "Optimizar rutas"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/wizard/logistics_route_optimize_wizard.py:0
+msgid "Optimized Routes"
+msgstr "Rutas optimizadas"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route__sequence
+msgid "Order of the stop within the driver's day."
+msgstr "Orden de la parada dentro del día del chofer."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__failure_reason__other
+msgid "Other"
+msgstr "Otro"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Out of geofence"
+msgstr "Fuera de geocerca"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Overdue"
+msgstr "Atrasadas"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route_optimizer.py:0
+msgid "Paste the Google service account JSON key in the Logistics settings."
+msgstr ""
+"Pegue la llave JSON de la cuenta de servicio de Google en los ajustes de "
+"Logística."
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__payment_method
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Payment Method"
 msgstr "Método de pago"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__payment_type
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Payment Type"
 msgstr "Forma de pago"
 
 #. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Pending"
+msgstr "Pendientes"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_hr_employee_map_logistics_driver
+msgid "Phone"
+msgstr "Teléfono"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__planned_arrival
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_map
+msgid "Planned Arrival"
+msgstr "Llegada planeada"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.fleet_vehicle_view_map_logistics
+msgid "Plate"
+msgstr "Placa"
+
+#. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
 msgid "Postpone"
-msgstr "Pospuesto"
+msgstr "Posponer"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__state__postponed
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Postponed"
 msgstr "Pospuesto"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__purchase_order_id
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Print Proof"
+msgstr "Imprimir comprobante"
+
+#. module: arbz_delivery_route
+#: model:ir.actions.report,name:arbz_delivery_route.action_report_delivery_proof
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Proof of Delivery"
+msgstr "Comprobante de entrega"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__purchase_order_ids
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
 msgid "Purchase Orders"
 msgstr "Órdenes de Compra"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Ready to Dispatch"
+msgstr "Listas para salir"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__received_at
+msgid "Received At"
+msgstr "Recibido el"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__received_by_name
+msgid "Received By"
+msgstr "Recibió"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__recorded_at
+msgid "Recorded At"
+msgstr "Registrado el"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__failure_reason__refused
+msgid "Refused by customer"
+msgstr "Rechazado por el cliente"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route__driver_user_id
+msgid "Related user name for the resource to manage its access."
+msgstr "Usuario relacionado con el recurso para gestionar su acceso."
 
 #. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
@@ -558,8 +1388,20 @@ msgstr "Reprogramar"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__state__requested
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Requested"
 msgstr "Requerido"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_require_proof_of_delivery
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "Require Proof of Delivery"
+msgstr "Requerir comprobante de entrega"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Reset to Draft"
+msgstr "Restablecer a borrador"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__activity_user_id
@@ -567,25 +1409,138 @@ msgid "Responsible User"
 msgstr "Usuario responsable"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__route_id
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Route"
+msgstr "Ruta"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__route_count
+msgid "Route Count"
+msgstr "Número de paradas"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__date
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__route_date
+msgid "Route Date"
+msgstr "Fecha de Ruta"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "Route Optimization"
+msgstr "Optimización de rutas"
+
+#. module: arbz_delivery_route
+#: model:ir.ui.menu,name:arbz_delivery_route.logistics_menu_act
+msgid "Routes"
+msgstr "Rutas"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/wizard/logistics_route_optimize_wizard.py:0
+msgid "Routes optimized"
+msgstr "Rutas optimizadas"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_routing_provider
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_optimize_wizard_form
+msgid "Routing Engine"
+msgstr "Motor de ruteo"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_vroom_profile
+msgid "Routing Profile"
+msgstr "Perfil de ruteo"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__routing_provider
+msgid "Routing Provider"
+msgstr "Proveedor de ruteo"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__message_has_sms_error
 msgid "SMS Delivery error"
 msgstr "Error de entrega del SMS"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__sale_order_id
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__sale_order_ids
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
 msgid "Sale Orders"
 msgstr "Orden de Venta"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__service_type
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Service Type"
 msgstr "Tipo de servicio"
 
 #. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "Set a driver and a vehicle before assigning: %s"
+msgstr "Indique chofer y vehículo antes de asignar: %s"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "Set a failure reason before postponing the stop."
+msgstr "Indique un motivo de falla antes de posponer la parada."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route_optimizer.py:0
+msgid "Set the Google Cloud project id in the Logistics settings."
+msgstr ""
+"Indique el ID del proyecto de Google Cloud en los ajustes de Logística."
+
+#. module: arbz_delivery_route
+#: model:ir.actions.act_window,name:arbz_delivery_route.action_logistics_config_settings
+#: model:ir.ui.menu,name:arbz_delivery_route.menu_logistics_settings
+msgid "Settings"
+msgstr "Ajustes"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_shift_end
+msgid "Shift End"
+msgstr "Fin de turno"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_shift_start
+msgid "Shift Start"
+msgstr "Inicio de turno"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__delivery_signature
+msgid "Signature"
+msgstr "Firma"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route__payment_type__single
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Single Payment"
 msgstr "Pago de Contado"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__source
+msgid "Source"
+msgstr "Origen"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__speed_kmh
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.fleet_vehicle_view_map_logistics
+msgid "Speed (km/h)"
+msgstr "Velocidad (km/h)"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Start Route"
+msgstr "Iniciar ruta"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__start_time
@@ -593,7 +1548,24 @@ msgid "Start Time"
 msgstr "Horario de inicio"
 
 #. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__logistics_route_event__event_type__start
+msgid "Started"
+msgstr "Iniciada"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__started_at
+msgid "Started At"
+msgstr "Iniciada el"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__hr_employee__logistics_license_type__state
+msgid "State driver license"
+msgstr "Licencia estatal"
+
+#. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__state
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_map
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Status"
 msgstr "Estatus"
 
@@ -611,10 +1583,117 @@ msgstr ""
 "Planificada: actividades futuras."
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,help:arbz_delivery_route.field_res_partner__license_subtype
-#: model:ir.model.fields,help:arbz_delivery_route.field_res_users__license_subtype
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_map
+msgid "Stop"
+msgstr "Parada"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "Stop %(route)s cannot go from \"%(current)s\" to \"%(target)s\"."
+msgstr "La parada %(route)s no puede pasar de \"%(current)s\" a \"%(target)s\"."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_optimize_wizard__route_ids
+msgid "Stops"
+msgstr "Paradas"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_optimize_wizard_form
+msgid ""
+"Stops are distributed among the selected drivers that have a vehicle, respecting the customer\n"
+"                    opening hours, their lunch closure and the drivers' shift. Branches without coordinates are\n"
+"                    geolocated first."
+msgstr ""
+"Las paradas se reparten entre los choferes seleccionados que tienen vehículo, respetando el horario\n"
+"                    del cliente, su hora de comida y el turno de los choferes. Las sucursales sin coordenadas se\n"
+"                    geolocalizan primero."
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_optimize_wizard_form
+msgid "Stops to Plan"
+msgstr "Paradas por planear"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route_event__sync_uuid
+msgid "Sync UUID"
+msgstr "UUID de sincronización"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route_optimizer.py:0
+msgid "The %(provider)s routing service answered with error %(status)s."
+msgstr "El servicio de rutas %(provider)s respondió con error %(status)s."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "The branch has no address or coordinates."
+msgstr "La sucursal no tiene dirección ni coordenadas."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/hr_employee.py:0
+msgid "The driver license of %(driver)s expires on %(date)s."
+msgstr "La licencia de conducir de %(driver)s vence el %(date)s."
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/wizard/logistics_route_optimize_wizard.py:0
+msgid "There are no requested or assigned stops on %s."
+msgstr "No hay paradas solicitadas o asignadas el %s."
+
+#. module: arbz_delivery_route
+#: model:ir.model.constraint,message:arbz_delivery_route.constraint_fleet_vehicle_gps_device_identifier_unique
+msgid "This GPS tracker is already installed in another vehicle."
+msgstr "Este rastreador GPS ya está instalado en otro vehículo."
+
+#. module: arbz_delivery_route
+#: model:ir.model.constraint,message:arbz_delivery_route.constraint_logistics_route_event_sync_uuid_unique
+msgid "This event was already synchronized."
+msgstr "Este evento ya fue sincronizado."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route_event__event_datetime
+msgid "Time recorded on the device."
+msgstr "Hora registrada en el dispositivo."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route_event__received_at
+msgid "Time the server received the event."
+msgstr "Hora en que el servidor recibió el evento."
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Timeline"
+msgstr "Línea de tiempo"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_position_search
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Today"
+msgstr "Hoy"
+
+#. module: arbz_delivery_route
+#: model:ir.actions.act_window,name:arbz_delivery_route.action_logistics_dispatch_today
+#: model:ir.ui.menu,name:arbz_delivery_route.menu_logistics_dispatch_today
+msgid "Today's Dispatch"
+msgstr "Despacho de hoy"
+
+#. module: arbz_delivery_route
+#: model:ir.ui.menu,name:arbz_delivery_route.menu_logistics_drivers_root
+msgid "Tracking"
+msgstr "Rastreo"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Transfer"
+msgstr "Transferencia"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_hr_employee__logistics_license_subtype
 msgid "Type of license to know which vehicles the driver can operate"
-msgstr "Tipo de licencia para saber qué vehículos puede operar el conductor"
+msgstr "Tipo de licencia para saber qué vehículos puede operar el chofer"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,help:arbz_delivery_route.field_logistics_route__activity_exception_decoration
@@ -622,19 +1701,76 @@ msgid "Type of the exception activity on record."
 msgstr "Tipo de actividad de excepción registrada."
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__message_unread
-msgid "Unread Messages"
-msgstr "Mensajes sin leer"
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_form
+msgid "Unassign"
+msgstr "Desasignar"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__message_unread_counter
-msgid "Unread Messages Counter"
-msgstr "Mensajes sin leer"
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "Unknown action %s."
+msgstr "Acción desconocida %s."
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Unpaid"
+msgstr "Por pagar"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__res_config_settings__logistics_routing_provider__vroom
+msgid "VROOM / OpenRouteService (open source)"
+msgstr "VROOM / OpenRouteService (código abierto)"
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_config_settings__logistics_vroom_url
+msgid "VROOM URL"
+msgstr "URL de VROOM"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route_optimizer.py:0
+msgid "VROOM could not solve the routes: %s"
+msgstr "VROOM no pudo resolver las rutas: %s"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid ""
+"Validity of the API key created when a driver logs into the mobile app."
+msgstr ""
+"Vigencia de la clave API creada cuando un chofer inicia sesión en la app "
+"móvil."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_res_config_settings__logistics_api_key_days
+msgid ""
+"Validity of the API key generated when a driver logs into the mobile app."
+msgstr ""
+"Vigencia de la clave API generada cuando un chofer inicia sesión en la app "
+"móvil."
+
+#. module: arbz_delivery_route
+#: model:ir.model,name:arbz_delivery_route.model_fleet_vehicle
+#: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_position__vehicle_id
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_position_search
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
+msgid "Vehicle"
+msgstr "Vehículo"
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__vehicle_id
 msgid "Vehicle Assigned"
 msgstr "Vehiculo Asignado"
+
+#. module: arbz_delivery_route
+#: model:ir.actions.act_window,name:arbz_delivery_route.action_logistics_vehicles_live
+#: model:ir.ui.menu,name:arbz_delivery_route.menu_logistics_vehicles_live
+msgid "Vehicles Live"
+msgstr "Vehículos en vivo"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "Vehicles leave the depot and come back within this shift."
+msgstr "Los vehículos salen de la base y regresan dentro de este turno."
 
 #. module: arbz_delivery_route
 #: model:ir.model.fields,field_description:arbz_delivery_route.field_logistics_route__website_message_ids
@@ -647,133 +1783,13 @@ msgid "Website communication history"
 msgstr "Historial de comunicaciones del sitio web"
 
 #. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__code_plus_google_maps
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__code_plus_google_maps
-msgid "code_plus_google_maps"
-msgstr "Código de Google Maps"
-
-#. module: arbz_delivery_route
-#: model:ir.model.fields,help:arbz_delivery_route.field_res_partner__days_to_expire
-#: model:ir.model.fields,help:arbz_delivery_route.field_res_users__days_to_expire
-msgid "days left until the driver`s license is sold"
-msgstr "días Faltantes para que Expire la Licencia"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
-msgid "driver license numbner"
-msgstr "numero de Licencia de Conducir"
-
-#. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__its_courier_service
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__its_courier_service
-msgid "its_courier_service"
-msgstr "es Paqueteria"
-
-#. module: arbz_delivery_route
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_partner__its_vehicle_drivers
-#: model:ir.model.fields,field_description:arbz_delivery_route.field_res_users__its_vehicle_drivers
-msgid "its_vehicle_drivers"
-msgstr "es Operador de Vehiculos"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
-msgid "license Subtype"
-msgstr "subTipo de Licencia"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
-msgid "license expiration"
-msgstr "expiración de la Licencia"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
-msgid "license type"
-msgstr "tipo de Licencia"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_res_partner_form_logistics
-msgid "license valid from"
-msgstr "fecha de Emisión de la Licencia"
-
-#. module: arbz_delivery_route
-#: model:ir.model.fields.selection,name:arbz_delivery_route.selection__res_partner__license_type__state
-msgid "state driver`s license "
-msgstr "licencia de Conducir Estatal "
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Card"
-msgstr "Tarjeta"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Collection"
-msgstr "Recolección"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Deferred / Installments"
-msgstr "Diferido / Parcialidades"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Home"
-msgstr "Domicilio"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Month"
-msgstr "Mes"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "My Routes"
-msgstr "Mis rutas"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Occur"
-msgstr "Ocurre"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Overdue"
-msgstr "Atrasadas"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Pending"
-msgstr "Pendientes"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Ready to Dispatch"
-msgstr "Listas para salir"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Route"
-msgstr "Ruta"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Today"
-msgstr "Hoy"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Transfer"
-msgstr "Transferencia"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Unpaid"
-msgstr "Por pagar"
-
-#. module: arbz_delivery_route
-#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
-msgid "Vehicle"
-msgstr "Vehículo"
+#: model:ir.model.fields,help:arbz_delivery_route.field_res_config_settings__logistics_depot_partner_id
+msgid ""
+"Where the vehicles leave from and return to. Defaults to the company "
+"address."
+msgstr ""
+"De dónde salen y a dónde regresan los vehículos. Por defecto, la dirección "
+"de la empresa."
 
 #. module: arbz_delivery_route
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
@@ -799,3 +1815,27 @@ msgstr "Sin órdenes de venta"
 #: model_terms:ir.ui.view,arch_db:arbz_delivery_route.view_logistics_route_search
 msgid "Without Vehicle"
 msgstr "Sin vehículo"
+
+#. module: arbz_delivery_route
+#. odoo-python
+#: code:addons/arbz_delivery_route/models/logistics_route.py:0
+msgid "You can only operate the stops assigned to you."
+msgstr "Solo puede operar las paradas asignadas a usted."
+
+#. module: arbz_delivery_route
+#: model:ir.model.fields,help:arbz_delivery_route.field_res_config_settings__logistics_vroom_profile
+msgid ""
+"driving-car for OpenRouteService, car for a default self-hosted VROOM + "
+"OSRM."
+msgstr ""
+"driving-car para OpenRouteService, car para un VROOM + OSRM propio estándar."
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.res_config_settings_view_form_logistics
+msgid "https://api.openrouteservice.org/optimization"
+msgstr "https://api.openrouteservice.org/optimization"
+
+#. module: arbz_delivery_route
+#: model_terms:ir.ui.view,arch_db:arbz_delivery_route.report_delivery_proof
+msgid "m"
+msgstr "m"

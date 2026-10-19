@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_delivery_proof" model="ir.actions.report">
+        <field name="name">Proof of Delivery</field>
+        <field name="model">logistics.route</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">arbz_delivery_route.report_delivery_proof</field>
+        <field name="report_file">arbz_delivery_route.report_delivery_proof</field>
+        <field name="print_report_name">'Proof - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_logistics_route"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_delivery_proof">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="route">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Proof of Delivery <span t-field="route.name"/></h2>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <strong>Customer:</strong> <span t-field="route.customer_id"/><br/>
+                                <strong>Branch:</strong>
+                                <div t-field="route.branch_id" t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': True}"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Route Date:</strong> <span t-field="route.date"/><br/>
+                                <strong>Driver:</strong> <span t-field="route.driver_employee_id"/><br/>
+                                <strong>Vehicle:</strong> <span t-field="route.vehicle_id"/><br/>
+                                <strong>Delivered At:</strong> <span t-field="route.delivered_at"/>
+                            </div>
+                        </div>
+                        <table class="table table-sm mt-4" t-if="route.sale_order_ids or route.purchase_order_ids">
+                            <thead>
+                                <tr><th>Document</th><th>Date</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="route.sale_order_ids" t-as="sale_order">
+                                    <td t-out="sale_order.name"/>
+                                    <td t-field="sale_order.date_order" t-options="{'widget': 'date'}"/>
+                                </tr>
+                                <tr t-foreach="route.purchase_order_ids" t-as="purchase_order">
+                                    <td t-out="purchase_order.name"/>
+                                    <td t-field="purchase_order.date_order" t-options="{'widget': 'date'}"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row mt-5">
+                            <div class="col-6">
+                                <strong>Received By:</strong> <span t-field="route.received_by_name"/>
+                                <div t-if="route.delivery_signature" class="mt-2">
+                                    <img t-att-src="image_data_uri(route.delivery_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                                </div>
+                            </div>
+                            <div class="col-6" t-if="route.delivery_latitude or route.delivery_longitude">
+                                <strong>Delivery Location:</strong>
+                                <span t-out="'%.6f, %.6f' % (route.delivery_latitude, route.delivery_longitude)"/><br/>
+                                <strong>Distance to Branch:</strong> <span t-field="route.geofence_distance_m"/> m
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
