@@ -40,7 +40,7 @@ class PurchaseOrder(models.Model):
             amount_d = round(amount_d, 2)
             amount_d = int(round(amount_d * 100, 2))
 
-            words = rec.currency_id.with_context(lang=rec.partner_id.lang or 'es_ES').amount_to_text(amount_i).upper()
+            words = rec.currency_id.with_context(lang=rec.partner_id.lang or 'es_MX').amount_to_text(amount_i).upper()
 
             rec.amount_words = '%(words)s %(amount_d)02d/100 %(currency_type)s' % {
                                 'words': words,
