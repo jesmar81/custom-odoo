@@ -8,6 +8,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/ai_llm_connection_views.xml',
+        'views/res_config_settings_views.xml',
         'data/ai_llm_connection_data.xml',
     ],
     'license': 'LGPL-3',

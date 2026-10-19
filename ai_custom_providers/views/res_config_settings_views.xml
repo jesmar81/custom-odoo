@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ai.custom.providers</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='google_provider']" position="after">
+                <setting id="fireworks_provider" string="Use your own Fireworks AI account" help="Provide your API key to use Fireworks AI models in your agents" groups="base.group_system">
+                    <field name="fireworks_key_enabled"/>
+                    <group invisible="not fireworks_key_enabled">
+                        <div class="flex-grow-1">
+                            <field name="fireworks_key" placeholder="Key" password="True" nolabel="1" class="w-100"/>
+                        </div>
+                    </group>
+                    <div class="mt-2">
+                        <button name="%(ai_custom_providers.ai_llm_connection_action)d" type="action"
+                                string="Manage AI connections" class="btn-link p-0"/>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
