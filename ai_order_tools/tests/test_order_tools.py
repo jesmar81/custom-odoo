@@ -1,6 +1,6 @@
 import json
 
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import TransactionCase, tagged
 
 
@@ -135,6 +135,6 @@ class TestOrderTools(TransactionCase):
         restricted_user = self.env['res.users'].create({
             'name': 'No Sales', 'login': 'no_sales_ai', 'group_ids': [(6, 0, [self.env.ref('base.group_user').id])],
         })
-        tool = self.env.ref('ai_order_tools.ai_sale_create_quotation').with_user(restricted_user)
-        with self.assertRaises(Exception):
+        tool = self.env.ref('ai_order_tools.ai_sale_create_quotation').with_user(restricted_user).sudo()
+        with self.assertRaises(AccessError):
             tool._ai_tool_run(None, {'customer_id': self.customer.id})

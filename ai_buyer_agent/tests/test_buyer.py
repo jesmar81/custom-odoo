@@ -3,10 +3,10 @@ from datetime import timedelta
 from unittest.mock import MagicMock, patch
 
 from odoo import fields
-from odoo.exceptions import UserError
+from odoo.exceptions import AccessError, UserError
 from odoo.tests import TransactionCase, tagged
 
-SEND_PATH = 'odoo.addons.evolution_api.models.evolution_message.requests.post'
+HTTP_PATH = 'odoo.addons.evolution_api.models.evolution_account.requests.request'
 
 
 def _evolution_ok():
@@ -22,10 +22,12 @@ class TestBuyerAgent(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.env = cls.env(user=cls.env.ref('base.user_admin'))
-        parameters = cls.env['ir.config_parameter'].sudo()
-        for name, value in (('enabled', 'True'), ('base_url', 'https://evo.example.com'),
-                            ('instance', 'compras'), ('api_key', 'secret')):
-            parameters.set_param(f'evolution_api.{name}', value)
+        cls.account = cls.env['evolution.account'].create({
+            'name': 'Compras', 'base_url': 'https://evo.example.com', 'instance': 'compras', 'api_key': 'secret',
+            'default_model_ids': [(6, 0, cls.env['ir.model']._get('purchase.order').ids)],
+            'daily_limit': 50, 'min_delay_seconds': 0, 'max_delay_seconds': 0,
+            'send_from_hour': 0.0, 'send_until_hour': 24.0, 'tz': 'UTC',
+        })
         Partner = cls.env['res.partner']
         cls.vendor_whatsapp = Partner.create({'name': 'Vendor A', 'phone': '55 1111 0001', 'email': 'a@example.com'})
         cls.vendor_email = Partner.create({'name': 'Vendor B', 'email': 'b@example.com'})
@@ -53,6 +55,12 @@ class TestBuyerAgent(TransactionCase):
         order.button_confirm()
         return order
 
+    def _flush_whatsapp(self, cycles=3):
+        with patch(HTTP_PATH, return_value=_evolution_ok()) as request_mock:
+            for __ in range(cycles):
+                self.env['evolution.message']._cron_send_queue()
+        return request_mock
+
     def _start(self, product=None, needed_in_days=10):
         needed_date = fields.Date.to_string(fields.Date.today() + timedelta(days=needed_in_days))
         answer = self.env['ai.buyer.request']._ai_start_request((product or self.product).id, 100, needed_date, "Urgente")
@@ -69,8 +77,9 @@ class TestBuyerAgent(TransactionCase):
 
     def test_start_request_prepares_three_drafts_and_sends_nothing(self):
         messages_before = self.env['evolution.message'].search_count([])
-        with patch(SEND_PATH) as post:
+        with patch(HTTP_PATH) as post:
             request = self._start()
+            self._flush_whatsapp()
         post.assert_not_called()
         self.assertEqual(self.env['evolution.message'].search_count([]), messages_before)
         self.assertEqual(request.state, 'to_approve')
@@ -103,7 +112,9 @@ class TestBuyerAgent(TransactionCase):
         with self.assertRaisesRegex(UserError, "intermediary"):
             order.with_context(mark_rfq_as_sent=True).message_post(body="x")
         with self.assertRaisesRegex(UserError, "intermediary"):
-            self.env['evolution.message']._send_text(self.vendor_luis.phone, "hola", partner=self.vendor_luis)
+            self.env['evolution.message']._queue_message(self.account, self.vendor_luis.phone, "hola", partner=self.vendor_luis)
+        with self.assertRaisesRegex(UserError, "intermediary"):  # only the number is known: found by it
+            self.env['evolution.message']._queue_message(self.account, '5511110003', "hola")
         with self.assertRaisesRegex(UserError, "intermediary"):
             self.env['purchase.order']._ai_create_rfq(self.vendor_luis.id)
         self.assertEqual(order.state, 'draft')
@@ -117,47 +128,61 @@ class TestBuyerAgent(TransactionCase):
     def test_vendor_flagged_after_the_draft_blocks_the_approval(self):
         request = self._start()
         request.order_ids[0].partner_id.buy_through_intermediary = True
-        with patch(SEND_PATH) as post, self.assertRaisesRegex(UserError, "intermediary"):
+        with self.assertRaisesRegex(UserError, "intermediary"):
             request.action_approve_and_send()
-        post.assert_not_called()
+        self.assertFalse(self.env['evolution.message'].search([('res_model', '=', 'purchase.order')]))
         self.assertEqual(request.state, 'to_approve')
 
     # ------------------------------------------------------------ approval and sending
 
-    def test_approve_sends_by_whatsapp_or_email_and_starts_the_wait(self):
+    def test_approve_queues_whatsapp_or_email_and_starts_the_wait(self):
         request = self._start()
-        with patch(SEND_PATH, return_value=_evolution_ok()) as post:
-            request.action_approve_and_send()
+        request.action_approve_and_send()
         self.assertEqual(request.state, 'waiting')
         self.assertEqual(request.deadline_date - request.sent_date, timedelta(hours=24))
         self.assertEqual(set(request.order_ids.mapped('state')), {'sent'})
-        sent_numbers = sorted(call.kwargs['json']['number'] for call in post.call_args_list)
-        self.assertEqual(sent_numbers, ['525511110001', '525511110005'])  # A and E by WhatsApp, B has no phone
-        self.assertIn('Tornillo Especial', post.call_args_list[0].kwargs['json']['text'])
-        self.assertTrue(request.order_ids.filtered(lambda o: o.partner_id == self.vendor_email).message_ids.filtered(
-            lambda m: m.message_type == 'comment'))  # email path
+        queued = self.env['evolution.message'].search([('res_model', '=', 'purchase.order'), ('state', '=', 'queued')])
+        self.assertEqual(sorted(queued.mapped('phone')), ['525511110001', '525511110005'])  # A and E; B has no phone
+        self.assertEqual(set(queued.mapped('account_id')), {self.account})
+        mail_order = request.order_ids.filtered(lambda o: o.partner_id == self.vendor_email)
+        self.assertTrue(mail_order.message_ids.filtered(lambda m: m.message_type == 'comment'))  # email path
+        request_mock = self._flush_whatsapp()
+        self.assertEqual(request_mock.call_count, 2)
+        self.assertIn('Tornillo Especial', request_mock.call_args_list[0].kwargs['json']['text'])
+        self.assertEqual(set(self.env['evolution.message'].search([('id', 'in', queued.ids)]).mapped('state')), {'sent'})
 
-    def test_whatsapp_failure_falls_back_to_email(self):
+    def test_whatsapp_refused_by_the_account_falls_back_to_email(self):
+        self.env['evolution.optout']._register_optout('525511110001', self.vendor_whatsapp, source='manual')
         request = self._start()
-        failing = MagicMock()
-        failing.raise_for_status.side_effect = __import__('requests').exceptions.HTTPError("down")
-        with patch(SEND_PATH, return_value=failing):
-            request.action_approve_and_send()
-        vendor_a_order = request.order_ids.filtered(lambda o: o.partner_id == self.vendor_whatsapp)
-        self.assertEqual(vendor_a_order.state, 'sent')  # reached by email
-        vendor_e_order = request.order_ids.filtered(lambda o: o.partner_id == self.vendor_third)
-        self.assertEqual(vendor_e_order.state, 'draft')  # no email: could not be sent
+        request.action_approve_and_send()
+        order_a = request.order_ids.filtered(lambda o: o.partner_id == self.vendor_whatsapp)
+        self.assertEqual(order_a.state, 'sent')  # reached by email
+        self.assertTrue(order_a.message_ids.filtered(lambda m: m.message_type == 'comment'))
+        order_e = request.order_ids.filtered(lambda o: o.partner_id == self.vendor_third)
+        self.assertEqual(order_e.state, 'sent')  # E has no email but its WhatsApp was queued
+
+    def test_approver_without_access_to_a_whatsapp_account_uses_email(self):
+        self.account.default_model_ids = False
+        self.account.user_ids = False
+        buyer = self.env['res.users'].create({
+            'name': 'Buyer No Account', 'login': 'buyer_no_account', 'email': 'b@example.com',
+            'group_ids': [(6, 0, [self.env.ref('base.group_user').id, self.env.ref('purchase.group_purchase_user').id])],
+        })
+        request = self._start().with_user(buyer)
+        request.action_approve_and_send()
+        self.assertFalse(self.env['evolution.message'].search([('res_model', '=', 'purchase.order')]))
+        self.assertEqual(request.state, 'waiting')  # vendors with an email were reached
 
     # ------------------------------------------------------------ replies, quotes, comparison
 
     def test_quotes_comparison_and_deadline(self):
         request = self._start(needed_in_days=10)
-        with patch(SEND_PATH, return_value=_evolution_ok()):
-            request.action_approve_and_send()
+        request.action_approve_and_send()
+        self._flush_whatsapp()
         order_a = request.order_ids.filtered(lambda o: o.partner_id == self.vendor_whatsapp)
         order_b = request.order_ids.filtered(lambda o: o.partner_id == self.vendor_email)
 
-        self.env['evolution.message']._register_incoming('525511110001', "Son $100 c/u, entrega en 3 dias", external_id='R1')
+        self.env['evolution.message']._register_incoming(self.account, '525511110001', "Son $100 c/u, entrega en 3 dias", external_id='R1')
         replies = json.loads(self.env['ai.buyer.request']._ai_get_request(request.id))['vendors_asked']
         reply_texts = [reply['text'] for row in replies for reply in row['replies']]
         self.assertTrue(any('$100' in text for text in reply_texts))
@@ -191,8 +216,7 @@ class TestBuyerAgent(TransactionCase):
 
     def test_request_is_ready_as_soon_as_every_quote_is_in(self):
         request = self._start()
-        with patch(SEND_PATH, return_value=_evolution_ok()):
-            request.action_approve_and_send()
+        request.action_approve_and_send()
         for order in request.order_ids:
             self.env['ai.buyer.request']._ai_register_quote(order.id, 90.0, 5)
         self.env['ai.buyer.request']._cron_check_deadlines()
@@ -232,7 +256,7 @@ class TestBuyerAgent(TransactionCase):
         plain_user = self.env['res.users'].create({
             'name': 'No Purchase', 'login': 'no_purchase_buyer', 'group_ids': [(6, 0, [self.env.ref('base.group_user').id])],
         })
-        with self.assertRaises(Exception):
+        with self.assertRaises(AccessError):
             self.env['ai.buyer.request'].with_user(plain_user)._ai_start_request(self.product.id, 5)
 
     def test_purchase_user_can_run_the_whole_flow(self):
@@ -242,9 +266,9 @@ class TestBuyerAgent(TransactionCase):
             'group_ids': [(6, 0, [self.env.ref('base.group_user').id, self.env.ref('purchase.group_purchase_user').id])],
         })
         Request = self.env['ai.buyer.request'].with_user(buyer)
+        self.account.user_ids = buyer
         request = Request.browse(json.loads(Request._ai_start_request(self.product.id, 40, None, None))['id'])
-        with patch(SEND_PATH, return_value=_evolution_ok()):
-            request.action_approve_and_send()
+        request.action_approve_and_send()
         self.assertEqual(request.state, 'waiting')
         for order in request.order_ids:
             comparison = json.loads(Request._ai_register_quote(order.id, 70.0, 4, "Contado"))

@@ -189,21 +189,29 @@ class AiBuyerRequest(models.Model):
             return DEFAULT_WHATSAPP_REQUEST_TEXT.format_map(placeholders)
 
     def _send_order(self, order):
-        """Send one request through WhatsApp (Evolution API) or email.
+        """Send one request through WhatsApp (Evolution API queue) or email.
+
+        WhatsApp goes out through the queue of the account (spaced, with daily limits): it is
+        accepted here and delivered within minutes. When the account refuses it (limit reached,
+        opted-out contact, no access...) the request falls back to email.
 
         :return: description of the channel used, or False when nothing could be sent
         """
         self.ensure_one()
         vendor = order.partner_id
-        evolution_enabled = bool(self.env['evolution.message']._get_settings()['enabled'])
-        if evolution_enabled and vendor.phone:
-            message = self.env['evolution.message']._send_text(
-                vendor.phone, self._get_whatsapp_text(order), partner=vendor, document=order,
-            )
-            if message.state == 'sent':
+        account = self.env['evolution.account']._get_default_account(order)
+        if account and vendor.phone:
+            try:
+                self.env['evolution.message']._queue_message(
+                    account, vendor.phone, self._get_whatsapp_text(order),
+                    partner=vendor, document=order, author=self.env.user,
+                )
                 order.write({'state': 'sent'})
-                return 'WhatsApp'
-            order.message_post(body=_("WhatsApp failed (%s). Trying email.", html_escape(message.error or '')), subtype_xmlid='mail.mt_note')
+                return _("WhatsApp (%s)", account.name)
+            except UserError as err:  # AccessError is a UserError too
+                order.message_post(
+                    body=_("WhatsApp not queued (%s). Trying email.", html_escape(str(err))), subtype_xmlid='mail.mt_note',
+                )
         if vendor.email:
             order.with_context(mark_rfq_as_sent=True).message_post_with_source(
                 RFQ_EMAIL_TEMPLATE, email_layout_xmlid=EMAIL_LAYOUT,
@@ -226,7 +234,7 @@ class AiBuyerRequest(models.Model):
             channels[order] = self._send_order(order)
         sent_orders = self.env['purchase.order'].concat(*[order for order, channel in channels.items() if channel])
         if not sent_orders:
-            raise UserError(_("No request could be sent: check the phone, email and Evolution API settings of the vendors."))
+            raise UserError(_("No request could be sent: check the phone and email of the vendors and that you can use a WhatsApp account."))
 
         now = fields.Datetime.now()
         self.write({

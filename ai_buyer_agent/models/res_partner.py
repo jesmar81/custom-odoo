@@ -25,6 +25,15 @@ class ResPartner(models.Model):
             if partner.intermediary_partner_id == partner:
                 raise ValidationError(_("A vendor cannot be its own intermediary."))
 
+    def _evolution_can_contact(self):
+        """Plugs the intermediary flag into every WhatsApp account, person and AI agent."""
+        self.ensure_one()
+        if self.buy_through_intermediary:
+            return _(
+                "%s is bought through an intermediary and must not be contacted directly.", self.display_name,
+            )
+        return super()._evolution_can_contact()
+
     @api.model
     def _ai_find_partners(self, search_text, role=None):
         """Tell the agent which partners must never be contacted directly."""

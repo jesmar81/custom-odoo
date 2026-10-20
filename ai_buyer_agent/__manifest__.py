@@ -1,6 +1,6 @@
 {
     'name': 'AI Buyer Agent',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Inventory/Purchase',
     'summary': "AI buyer that asks 3 vendors from your purchase history for a quotation and compares the answers",
     'description': """
