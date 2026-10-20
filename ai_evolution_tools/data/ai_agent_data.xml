@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The default agent can prepare WhatsApp drafts. Other agents get the topic from AI > Agents > Topics. -->
+    <record id="ai.ai_default_agent" model="ai.agent">
+        <field name="topic_ids" eval="[Command.link(ref('ai_topic_whatsapp'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ai_whatsapp_list_accounts" model="ir.actions.server">
+        <field name="name">AI WhatsApp: List Accounts</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="evolution_api.model_evolution_message"/>
+        <field name="code">ai['result'] = record._ai_list_accounts()</field>
+        <field name="ai_tool_description">List the WhatsApp accounts (numbers) the user can use, with the messages still available today. Use it only when the user must choose between accounts.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {},
+    "required": []
+}
+        </field>
+    </record>
+
+    <record id="ai_whatsapp_find_conversation" model="ir.actions.server">
+        <field name="name">AI WhatsApp: Find Conversation</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="evolution_api.model_evolution_message"/>
+        <field name="code">ai['result'] = record._ai_find_conversations(search_text=search_text)</field>
+        <field name="ai_tool_description">Find WhatsApp conversations by contact name or phone number.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "search_text": {
+            "type": "string",
+            "description": "Name or phone to look for (min. 2 characters).",
+            "maxLength": 100
+        }
+    },
+    "required": [
+        "search_text"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_whatsapp_read_conversation" model="ir.actions.server">
+        <field name="name">AI WhatsApp: Read Conversation</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="evolution_api.model_evolution_message"/>
+        <field name="code">ai['result'] = record._ai_read_conversation(conversation_id=conversation_id)</field>
+        <field name="ai_tool_description">Read the latest messages of a WhatsApp conversation (what was sent and what the contact answered).</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "conversation_id": {
+            "type": "number",
+            "description": "Id of the conversation, obtained with 'Find Conversation'."
+        }
+    },
+    "required": [
+        "conversation_id"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_whatsapp_propose_message" model="ir.actions.server">
+        <field name="name">AI WhatsApp: Propose Message</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="evolution_api.model_evolution_message"/>
+        <field name="code">ai['result'] = record._ai_propose_message(partner_id=partner_id, text=text, account_id=account_id)</field>
+        <field name="ai_tool_description">Prepare a WhatsApp message to a contact as a DRAFT. NOTHING is sent: a person must approve it in Odoo. Use 'Find Partner' first to get the contact id. Write the final text, polite and short, in the language of the contact.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {
+        "partner_id": {
+            "type": "number",
+            "description": "Id of the contact, obtained with 'Find Partner'."
+        },
+        "text": {
+            "type": "string",
+            "description": "The message to send, final wording.",
+            "maxLength": 1000
+        },
+        "account_id": {
+            "type": "number",
+            "description": "Id of the WhatsApp account (optional, only if the user chose one)."
+        }
+    },
+    "required": [
+        "partner_id",
+        "text"
+    ]
+}
+        </field>
+    </record>
+
+    <record id="ai_whatsapp_list_drafts" model="ir.actions.server">
+        <field name="name">AI WhatsApp: List Pending Drafts</field>
+        <field name="state">code</field>
+        <field name="use_in_ai" eval="True"/>
+        <field name="model_id" ref="evolution_api.model_evolution_message"/>
+        <field name="code">ai['result'] = record._ai_list_drafts()</field>
+        <field name="ai_tool_description">List the WhatsApp drafts that are waiting for a person's approval.</field>
+        <field name="ai_tool_schema">
+{
+    "type": "object",
+    "properties": {},
+    "required": []
+}
+        </field>
+    </record>
+
+</odoo>
