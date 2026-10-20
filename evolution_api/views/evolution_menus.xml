@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_evolution_root" name="WhatsApp" sequence="55"
+              web_icon="evolution_api,static/description/icon.png"
+              groups="evolution_api.group_evolution_user"/>
+    <menuitem id="menu_evolution_conversations" name="Conversations" parent="menu_evolution_root"
+              action="evolution_conversation_action" sequence="10"/>
+    <menuitem id="menu_evolution_pending" name="Pending approval" parent="menu_evolution_root"
+              action="evolution_message_pending_action" sequence="20"/>
+    <menuitem id="menu_evolution_messages" name="Messages" parent="menu_evolution_root"
+              action="evolution_message_action" sequence="30"/>
+    <menuitem id="menu_evolution_config" name="Configuration" parent="menu_evolution_root" sequence="90"
+              groups="evolution_api.group_evolution_manager"/>
+    <menuitem id="menu_evolution_templates" name="Templates" parent="menu_evolution_config"
+              action="evolution_template_action" sequence="10"/>
+    <menuitem id="menu_evolution_optouts" name="Opt-outs" parent="menu_evolution_config"
+              action="evolution_optout_action" sequence="20"/>
+    <menuitem id="menu_evolution_accounts" name="Accounts" parent="menu_evolution_config"
+              action="evolution_account_action" sequence="30" groups="base.group_system"/>
+</odoo>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="evolution_conversation_view_list" model="ir.ui.view">
+        <field name="name">evolution.conversation.list</field>
+        <field name="model">evolution.conversation</field>
+        <field name="arch" type="xml">
+            <list decoration-bf="unread_count > 0" create="0">
+                <field name="last_message_date"/>
+                <field name="partner_id"/>
+                <field name="phone"/>
+                <field name="account_id"/>
+                <field name="last_message_preview"/>
+                <field name="unread_count" widget="badge" decoration-danger="unread_count > 0"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="evolution_conversation_view_form" model="ir.ui.view">
+        <field name="name">evolution.conversation.form</field>
+        <field name="model">evolution.conversation</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <header>
+                    <button name="action_reply" type="object" string="Reply" class="btn-primary"/>
+                    <button name="action_mark_read" type="object" string="Mark as read" invisible="not unread_count"/>
+                    <button name="action_close" type="object" string="Close" invisible="state == 'closed'"/>
+                    <button name="action_reopen" type="object" string="Reopen" invisible="state == 'open'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="account_id" readonly="1"/>
+                            <field name="partner_id"/>
+                            <field name="phone" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="state"/>
+                            <field name="unread_count"/>
+                        </group>
+                    </group>
+                    <field name="message_ids" readonly="1">
+                        <list decoration-info="direction == 'in'" decoration-danger="state == 'failed'">
+                            <field name="create_date"/>
+                            <field name="direction"/>
+                            <field name="body"/>
+                            <field name="attachment_ids" widget="many2many_tags"/>
+                            <field name="state" widget="badge"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="evolution_conversation_view_search" model="ir.ui.view">
+        <field name="name">evolution.conversation.search</field>
+        <field name="model">evolution.conversation</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="phone"/>
+                <filter string="Unread" name="unread" domain="[('unread_count', '>', 0)]"/>
+                <filter string="Mine" name="mine" domain="[('user_id', '=', uid)]"/>
+                <filter string="Open" name="open" domain="[('state', '=', 'open')]"/>
+                <group>
+                    <filter string="Account" name="group_account" context="{'group_by': 'account_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="evolution_conversation_action" model="ir.actions.act_window">
+        <field name="name">WhatsApp Conversations</field>
+        <field name="res_model">evolution.conversation</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_open': 1}</field>
+    </record>
+</odoo>

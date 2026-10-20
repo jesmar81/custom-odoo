@@ -1,2 +1,13 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_evolution_message_system,evolution.message system,model_evolution_message,base.group_system,1,1,1,1
+access_evolution_account_user,evolution.account user,model_evolution_account,group_evolution_user,1,0,0,0
+access_evolution_account_system,evolution.account system,model_evolution_account,base.group_system,1,1,1,1
+access_evolution_message_user,evolution.message user,model_evolution_message,group_evolution_user,1,0,0,0
+access_evolution_message_manager,evolution.message supervisor,model_evolution_message,group_evolution_manager,1,0,0,0
+access_evolution_conversation_user,evolution.conversation user,model_evolution_conversation,group_evolution_user,1,1,0,0
+access_evolution_conversation_manager,evolution.conversation supervisor,model_evolution_conversation,group_evolution_manager,1,1,0,0
+access_evolution_optout_user,evolution.optout user,model_evolution_optout,group_evolution_user,1,0,0,0
+access_evolution_optout_manager,evolution.optout supervisor,model_evolution_optout,group_evolution_manager,1,1,1,1
+access_evolution_template_user,evolution.template user,model_evolution_template,group_evolution_user,1,0,0,0
+access_evolution_template_system,evolution.template system,model_evolution_template,base.group_system,1,1,1,1
+access_evolution_composer_user,evolution.composer user,model_evolution_composer,group_evolution_user,1,1,1,1
+access_evolution_template_editor,evolution.template editor,model_evolution_template,mail.group_mail_template_editor,1,1,1,1

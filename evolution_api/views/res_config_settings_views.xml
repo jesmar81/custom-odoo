@@ -7,40 +7,19 @@
         <field name="arch" type="xml">
             <xpath expr="//block[@name='integration']" position="inside">
                 <setting id="evolution_api" string="WhatsApp with Evolution API"
-                         help="Send WhatsApp messages through your own Evolution API server" groups="base.group_system">
-                    <field name="evolution_enabled"/>
-                    <div class="content-group" invisible="not evolution_enabled">
-                        <div class="row mt16">
-                            <label for="evolution_base_url" class="col-lg-4 o_light_label"/>
-                            <field name="evolution_base_url" placeholder="https://evolution.mycompany.com"/>
-                        </div>
-                        <div class="row">
-                            <label for="evolution_instance" class="col-lg-4 o_light_label"/>
-                            <field name="evolution_instance"/>
-                        </div>
-                        <div class="row">
-                            <label for="evolution_api_key" class="col-lg-4 o_light_label"/>
-                            <field name="evolution_api_key" password="True"/>
-                        </div>
-                        <div class="row">
-                            <label for="evolution_default_country_code" class="col-lg-4 o_light_label"/>
-                            <field name="evolution_default_country_code"/>
-                        </div>
-                        <div class="row">
-                            <label for="evolution_webhook_url" class="col-lg-4 o_light_label"/>
-                            <field name="evolution_webhook_url" readonly="True"/>
-                        </div>
-                        <div class="text-muted">
-                            Set this URL as webhook of the instance in Evolution API and enable the MESSAGES_UPSERT event.
-                        </div>
+                         help="Several numbers, each with its own users and sending limits" groups="base.group_system">
+                    <div class="content-group">
                         <div class="row mt8">
-                            <label for="evolution_test_number" class="col-lg-4 o_light_label"/>
-                            <field name="evolution_test_number" placeholder="55 1234 5678"/>
+                            <label for="evolution_optout_words" class="col-lg-4 o_light_label"/>
+                            <field name="evolution_optout_words"/>
+                        </div>
+                        <div class="row">
+                            <label for="evolution_max_file_mb" class="col-lg-4 o_light_label"/>
+                            <field name="evolution_max_file_mb"/>
                         </div>
                         <div class="mt8">
-                            <button name="action_evolution_send_test" type="object" string="Send test message" class="btn-link"/>
-                            <button name="action_evolution_regenerate_token" type="object" string="Regenerate webhook token"
-                                    class="btn-link" confirm="The webhook URL changes: update it in Evolution API. Continue?"/>
+                            <button name="%(evolution_api.evolution_account_action)d" type="action"
+                                    string="Manage WhatsApp accounts" class="btn-link"/>
                         </div>
                     </div>
                 </setting>

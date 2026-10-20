@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_evolution" model="ir.module.category">
+        <field name="name">WhatsApp (Evolution API)</field>
+        <field name="sequence">60</field>
+    </record>
+
+    <record id="privilege_evolution" model="res.groups.privilege">
+        <field name="name">WhatsApp (Evolution API)</field>
+        <field name="sequence">60</field>
+        <field name="category_id" ref="module_category_evolution"/>
+    </record>
+
+    <record id="group_evolution_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="sequence">10</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="privilege_id" ref="privilege_evolution"/>
+        <field name="comment">Sends and reads WhatsApp messages from the accounts they were granted.</field>
+    </record>
+
+    <record id="group_evolution_manager" model="res.groups">
+        <field name="name">Supervisor</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="privilege_evolution"/>
+        <field name="implied_ids" eval="[(4, ref('group_evolution_user'))]"/>
+        <field name="comment">Reads every conversation of every account, approves drafts and manages opt-outs.</field>
+    </record>
+
+    <record id="base.group_system" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_evolution_manager'))]"/>
+    </record>
+
+    <!-- Accounts: members and supervisors only (same company). -->
+    <record id="rule_evolution_account_member" model="ir.rule">
+        <field name="name">WhatsApp account: members and supervisors</field>
+        <field name="model_id" ref="model_evolution_account"/>
+        <field name="domain_force">[('user_ids', 'in', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_evolution_user'))]"/>
+    </record>
+    <record id="rule_evolution_account_manager" model="ir.rule">
+        <field name="name">WhatsApp account: supervisors see all</field>
+        <field name="model_id" ref="model_evolution_account"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_evolution_manager'))]"/>
+    </record>
+    <record id="rule_evolution_account_company" model="ir.rule">
+        <field name="name">WhatsApp account: multi-company</field>
+        <field name="model_id" ref="model_evolution_account"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Conversations and messages follow the account. -->
+    <record id="rule_evolution_conversation_member" model="ir.rule">
+        <field name="name">WhatsApp conversation: members of the account</field>
+        <field name="model_id" ref="model_evolution_conversation"/>
+        <field name="domain_force">[('account_id.user_ids', 'in', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_evolution_user'))]"/>
+    </record>
+    <record id="rule_evolution_conversation_manager" model="ir.rule">
+        <field name="name">WhatsApp conversation: supervisors see all</field>
+        <field name="model_id" ref="model_evolution_conversation"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_evolution_manager'))]"/>
+    </record>
+    <record id="rule_evolution_message_member" model="ir.rule">
+        <field name="name">WhatsApp message: members of the account</field>
+        <field name="model_id" ref="model_evolution_message"/>
+        <field name="domain_force">[('account_id.user_ids', 'in', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_evolution_user'))]"/>
+    </record>
+    <record id="rule_evolution_message_manager" model="ir.rule">
+        <field name="name">WhatsApp message: supervisors see all</field>
+        <field name="model_id" ref="model_evolution_message"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_evolution_manager'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="evolution_composer_view_form" model="ir.ui.view">
+        <field name="name">evolution.composer.form</field>
+        <field name="model">evolution.composer</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="res_model" invisible="1"/>
+                <field name="res_id" invisible="1"/>
+                <field name="allowed_account_ids" invisible="1"/>
+                <group>
+                    <group>
+                        <field name="account_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="partner_id"/>
+                        <field name="phone"/>
+                    </group>
+                    <group>
+                        <field name="template_id" invisible="not res_model" options="{'no_create': True}"/>
+                        <field name="attach_document_pdf" invisible="not res_model"/>
+                        <field name="report_id" invisible="not attach_document_pdf" required="attach_document_pdf"
+                               options="{'no_create': True}"/>
+                    </group>
+                </group>
+                <field name="body" placeholder="Write the message…"/>
+                <field name="attachment_ids" widget="many2many_binary"/>
+                <footer>
+                    <button name="action_send" type="object" string="Send" class="btn-primary" data-hotkey="q"/>
+                    <button special="cancel" string="Cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="evolution_account_view_list" model="ir.ui.view">
+        <field name="name">evolution.account.list</field>
+        <field name="model">evolution.account</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="connection_state == 'close' or is_paused" decoration-success="connection_state == 'open'">
+                <field name="name"/>
+                <field name="phone_number"/>
+                <field name="connection_state" widget="badge"/>
+                <field name="is_paused" widget="boolean"/>
+                <field name="sent_today"/>
+                <field name="daily_limit"/>
+                <field name="queued_count"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="evolution_account_view_form" model="ir.ui.view">
+        <field name="name">evolution.account.form</field>
+        <field name="model">evolution.account</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_check_connection" type="object" string="Check connection"/>
+                    <button name="action_resume" type="object" string="Resume sending" class="btn-primary"
+                            invisible="not is_paused" groups="evolution_api.group_evolution_manager"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Paused" bg_color="text-bg-danger" invisible="not is_paused"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-secondary" invisible="active or is_paused"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_messages" type="object" class="oe_stat_button" icon="fa-comments">
+                            <div class="o_stat_info">
+                                <field name="queued_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Queued</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group string="Account">
+                            <field name="name" placeholder="Purchases"/>
+                            <field name="phone_number"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" invisible="1"/>
+                            <field name="connection_state"/>
+                            <field name="pause_reason" invisible="not is_paused"/>
+                        </group>
+                        <group string="Evolution API server">
+                            <field name="base_url" placeholder="https://evolution.mycompany.com"/>
+                            <field name="instance"/>
+                            <field name="api_key" password="True"/>
+                            <field name="default_country_code"/>
+                        </group>
+                    </group>
+                    <group string="Webhook for the replies">
+                        <field name="webhook_url" widget="CopyClipboardChar" readonly="1"/>
+                        <div class="text-muted" colspan="2">
+                            Configure this URL as webhook of the instance in Evolution API, with the events
+                            MESSAGES_UPSERT and CONNECTION_UPDATE enabled.
+                        </div>
+                        <button name="action_regenerate_token" type="object" string="Regenerate token" class="btn-link"
+                                confirm="The webhook URL changes: update it in Evolution API. Continue?"/>
+                    </group>
+                    <notebook>
+                        <page string="Who can use it" name="access">
+                            <group>
+                                <field name="user_ids" widget="many2many_tags"/>
+                                <field name="default_model_ids" widget="many2many_tags"/>
+                                <field name="allow_ai_drafts"/>
+                            </group>
+                        </page>
+                        <page string="Protection of the number" name="protection">
+                            <group>
+                                <group string="Volume">
+                                    <field name="daily_limit"/>
+                                    <field name="max_per_contact_per_day"/>
+                                    <field name="sent_today"/>
+                                    <field name="remaining_today"/>
+                                </group>
+                                <group string="Pace">
+                                    <field name="min_delay_seconds"/>
+                                    <field name="max_delay_seconds"/>
+                                    <field name="send_from_hour" widget="float_time"/>
+                                    <field name="send_until_hour" widget="float_time"/>
+                                    <field name="tz"/>
+                                    <field name="require_known_contact"/>
+                                </group>
+                            </group>
+                            <div class="text-muted">
+                                Messages are queued and sent one by one with a random pause between them, only inside the
+                                sending hours. Unofficial WhatsApp connections can be banned if they send too much or to
+                                people who do not expect the message: keep the volume low.
+                            </div>
+                        </page>
+                        <page string="Test" name="test">
+                            <group>
+                                <field name="test_phone"/>
+                            </group>
+                            <button name="action_send_test" type="object" string="Send test message" class="btn-secondary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="evolution_account_action" model="ir.actions.act_window">
+        <field name="name">WhatsApp Accounts</field>
+        <field name="res_model">evolution.account</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
