@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="evolution_template_sale_order" model="evolution.template">
+        <field name="name">Sales: quotation / order</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="report_id" ref="sale.action_report_saleorder"/>
+        <field name="body">Hola {{ object.partner_id.name }}, le compartimos {{ object.name }} por {{ object.amount_total }} {{ object.currency_id.name }}. Quedamos atentos a sus comentarios. Gracias.</field>
+    </record>
+    <record id="evolution_template_purchase_order" model="evolution.template">
+        <field name="name">Purchases: request for quotation</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="report_id" ref="purchase.report_purchase_quotation"/>
+        <field name="body">Hola {{ object.partner_id.name }}, le saluda {{ object.company_id.name }}. Le enviamos la solicitud {{ object.name }}. ¿Nos puede cotizar con precio, tiempo de entrega y condiciones de pago? Gracias.</field>
+    </record>
+    <record id="evolution_template_invoice" model="evolution.template">
+        <field name="name">Accounting: invoice</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="report_id" ref="account.account_invoices"/>
+        <field name="body">Hola {{ object.partner_id.name }}, le compartimos la factura {{ object.name }} por {{ object.amount_total }} {{ object.currency_id.name }}, con vencimiento {{ object.invoice_date_due }}. Gracias por su preferencia.</field>
+    </record>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_form_whatsapp" model="ir.ui.view">
+        <field name="name">purchase.order.form.whatsapp</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_whatsapp" type="object" string="WhatsApp"
+                        icon="fa-whatsapp" groups="evolution_api.group_evolution_user"
+                        invisible="not id or not partner_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
